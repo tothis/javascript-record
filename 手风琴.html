@@ -24,9 +24,9 @@
         div.content {
             padding: 0 18px;
             background-color: white;
-            max-height: 0;
+            height: 0;
             overflow: hidden;
-            transition: max-height 0.2s ease-out;
+            transition: height 0.2s ease-out;
         }
     </style>
 </head>
@@ -54,10 +54,10 @@
         options[i].onclick = function () {
             this.classList.toggle('active');
             let content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
+            if (content.style.height) {
+                content.style.height = null;
             } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.height = content.scrollHeight + 'px';
             }
         }
     }

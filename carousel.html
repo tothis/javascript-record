@@ -205,7 +205,11 @@
                 $('#btnId_' + i).removeClass('on');
             }
         }
-        interval = setInterval(right(), 2000);
+        /**
+         * jquery发现无if判断的递归后 会直接报错Maximum call stack size exceeded(超过最大调用堆栈大小)
+         * 使用引号包括函数 jquery不会直接检查递归
+         */
+        interval = setInterval('right()', 2000);
     }
 </script>
 </body>
