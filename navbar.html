@@ -16,10 +16,10 @@
     <li>six</li>
 </ul>
 
-<p>test</p>
+<p onclick="fun()">test</p>
 <span style="font-size: 28px;">test</span>
 
-<div class="one" style="width: calc(1536px - 2px);"></div>
+<div class="one" style="width: calc(1920px - 2px);"></div>
 <div class="two" style="width: calc(100vw - 2px);"></div>
 
 <!-- <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script> -->
@@ -42,6 +42,26 @@
         }
         // $(that).addClass('on');
         that.classList.add('on');
+    }
+
+    let fontSize = 14; // 定义1rem对应的px值
+
+    /** 自动更改font-size */
+    (function () {
+        const newRem = function () {
+            const html = document.documentElement;
+            html.style.fontSize = fontSize / (html.getBoundingClientRect().width / 100) + 'vw';
+            console.log(html.getBoundingClientRect().width)
+        };
+        window.addEventListener('resize', newRem, false);
+        newRem();
+    })();
+
+    function fun() {
+        // 网页可见区域宽 包括边框
+        let width = document.body.offsetWidth;
+        let htmlFontSize = fontSize / (width / 100) + 'vw';
+        document.getElementsByTagName('html')[0].style.fontSize = htmlFontSize;
     }
 </script>
 </body>
