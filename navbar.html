@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>navbar</title>
+    <!-- 必须加入type="text/less" -->
+    <link href="./css/navbar.less" rel="stylesheet" type="text/less">
+</head>
+<body>
+<ul class="content">
+    <li class="on">one</li>
+    <li>two</li>
+    <li>three</li>
+    <li>four</li>
+    <li>five</li>
+    <li>six</li>
+</ul>
+
+<p>test</p>
+<span style="font-size: 28px;">test</span>
+
+<div class="one" style="width: calc(1536px - 2px);"></div>
+<div class="two" style="width: calc(100vw - 2px);"></div>
+
+<!-- <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="https://cdn.bootcss.com/less.js/3.10.3/less.min.js"></script>
+<script>
+    // 所有导航标签
+    let list = document.getElementsByClassName('content')[0].children;
+
+    // 为元素绑定方法
+    for (let i = 0; i < list.length; i++) {
+        list[i].onclick = function () {
+            _switch(this);
+        }
+    }
+
+    function _switch(that) {
+        for (let i = 0; i < list.length; i++) {
+            // $(list[i]).removeClass('on');
+            list[i].classList.remove('on');
+        }
+        // $(that).addClass('on');
+        that.classList.add('on');
+    }
+</script>
+</body>
+</html>
