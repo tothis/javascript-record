@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>左右互换</title>
+    <style>
+
+        select {
+            width: 100px;
+            height: 200px;
+        }
+
+        button {
+            position: relative;
+            top: -100px;
+        }
+    </style>
+    <script>
+        function _switch(ele1, ele2) {
+            let left = document.getElementById(ele1);
+            let index = left.selectedIndex;
+            let right = document.getElementById(ele2);
+            let option = document.createElement('option');
+            option.innerHTML = left[index].text;
+            right.appendChild(option);
+            left.options[index] = null;
+        }
+    </script>
+</head>
+<body>
+<select id="left" multiple>
+    <option>a</option>
+    <option>b</option>
+    <option>c</option>
+    <option>d</option>
+</select>
+<button onclick="_switch('right','left')">left</button>
+<button onclick="_switch('left','right')">right</button>
+<select id="right" multiple>
+    <option>h</option>
+    <option>g</option>
+    <option>f</option>
+    <option>e</option>
+</select>
+</body>
+</html>
