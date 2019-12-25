@@ -157,6 +157,28 @@
             height: calc(100% - 40px);
             overflow-y: scroll;
         }
+
+        /* 滚动条宽高 */
+        .content::-webkit-scrollbar {
+            width: 50px;
+            height: 1px;
+        }
+
+        /* 滑块样式 */
+        .content::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .2) inset;
+            box-shadow: 0 0 2px rgba(0, 0, 0, .2) inset;
+            background: #838383;
+        }
+
+        /* 滑块轨道样式 */
+        .content::-webkit-scrollbar-track {
+            -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0) inset;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0) inset;
+            border-radius: 10px;
+            background: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -168,18 +190,27 @@
         <p>弹出层内容</p>
         <p>弹出层内容</p>
         <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
+        <p>弹出层内容</p>
     </div>
 </div>
 <div id="shadow">
 
 </div>
 <script>
+    // 显示弹层
     document.getElementById('show').onclick = function () {
         // document.getElementById('alert').style.display = 'block';
         document.getElementById('alert').classList.remove('alert');
         document.getElementById('shadow').style.display = 'block';
     }
 
+    // 隐藏弹层
     document.getElementsByClassName('close')[0].onclick = function () {
         // document.getElementById('alert').style.display = 'none';
         document.getElementById('alert').classList.add('alert');

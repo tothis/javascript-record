@@ -5,6 +5,25 @@
     <title>navbar</title>
     <!-- 必须加入type="text/less" -->
     <link href="./css/navbar.less" rel="stylesheet" type="text/less">
+    <style>
+        .content > li::after {
+            content: '';
+            display: block;
+            margin: -10px auto;
+            border-radius: 6px;
+            width: 94%;
+            height: 10px;
+            background-color: #6200ff;
+        }
+
+        .content > li:nth-of-type(odd) {
+            width: 10%;
+        }
+
+        .content > li:nth-of-type(even) {
+            width: calc((100% - 30% - 12px) / 3);
+        }
+    </style>
 </head>
 <body>
 <ul class="content">
