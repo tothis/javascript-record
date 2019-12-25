@@ -14,20 +14,29 @@
             display: block;
         }
 
-        .fa {
-            display: block;
+        p {
+            display: block !important;
         }
 
         h1::before {
+            content: 'font';
+        }
+
+        #font1::after {
+            /* unicode &#xf21e; */
             content: '\f21e';
             /* 声明使用字体 */
             font-family: fontawesome;
-            font-size: 1em;
+        }
+
+        #font1, #font2 {
+            font-size: 2em;
         }
     </style>
 </head>
 <body>
-<h1>font</h1>
+<h1 id="font1"></h1>
+<h1 id="font2" class="fa">&#xf21e;</h1>
 
 <p class="fa fa-sort-desc">one</p>
 <div class="content">one content</div>
@@ -38,7 +47,7 @@
 <!-- <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script> -->
 <script>
     // 所有数据表格箭头
-    let fontList = document.getElementsByClassName('fa');
+    let fontList = document.getElementsByTagName('p');
     let contentList = document.getElementsByClassName('content');
 
     // 为元素绑定方法
@@ -57,7 +66,6 @@
         let isOpen = that.classList.contains('fa-sort-desc');
         let var1 = isOpen ? 'fa-sort-desc' : 'fa-sort-asc';
         let var2 = isOpen ? 'fa-sort-asc' : 'fa-sort-desc';
-        console.log(isOpen)
         // 当前元素为关闭状态
         if (!isOpen) {
             // 关闭所有的标签
