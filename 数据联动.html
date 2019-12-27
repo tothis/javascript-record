@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>省市区联动</title>
+</head>
+<body>
+省份<select id="province" onchange="resetCity()">
+    <option>选择省份</option>
+</select>
+城市<select id="city" onchange="resetArea()">
+    <option>选择城市</option>
+</select>
+地区<select id="area">
+    <option>选择地区</option>
+</select>
+<script>
+    let provinceArr = ['1', '2', '3'];
+    let cityArr = [
+        ['11', '12', '13']
+        , ['21', '22', '23']
+        , ['31', '32', '33']
+    ];
+    let areaArr = [
+        [
+            ['111', '112', '113'], ['121', '122', '123'], ['131', '132', '133']
+        ], [
+            ['211', '212', '213'], ['221', '222', '223'], ['231', '232', '233']
+        ], [
+            ['311', '312', '313'], ['321', '322', '323'], ['331', '332', '333']
+        ]
+    ];
+
+    let province = document.getElementById('province');
+
+    // 初始化省份数据
+    for (let i = 0; i < provinceArr.length; i++) {
+        let option = document.createElement('option');
+        option.innerText = provinceArr[i];
+        province.appendChild(option);
+    }
+
+    let city = document.getElementById('city');
+
+    function resetCity() {
+        // 清空城市数据
+        city.length = 1;
+        // 清空地区数据
+        area.length = 1;
+
+        // 当前省份位置
+        let provinceIndex = province.selectedIndex;
+
+        if (provinceIndex === 0) return;
+
+        // 当前城市数据
+        let _cityArr = cityArr[provinceIndex - 1];
+        for (let i = 0; i < _cityArr.length; i++) {
+            let option = document.createElement('option');
+            option.innerText = _cityArr[i];
+            city.appendChild(option);
+        }
+    }
+
+    let area = document.getElementById('area');
+
+    function resetArea() {
+        // 清空地区数据
+        area.length = 1;
+        // 当前城市位置
+        let cityIndex = city.selectedIndex;
+
+        if (cityIndex === 0) return;
+
+        // 当前省份位置
+        let provinceIndex = province.selectedIndex;
+        // 当前地区数据
+        let _areaArr = areaArr[provinceIndex - 1][cityIndex - 1];
+        for (let i = 0; i < _areaArr.length; i++) {
+            let option = document.createElement('option');
+            option.innerText = _areaArr[i];
+            area.appendChild(option);
+        }
+    }
+</script>
+</body>
+</html>
