@@ -136,15 +136,14 @@
         changeAffter("p::after{content:'ie专属" + this.value + "';}");
     }
 
-
     function changeAffter(css) {
         // 在存在的style文档中动态插入样式
-        // document.styleSheet[0].addRule('.red:before','background-color:green');
-        // document.styleSheet[0].insertRule('.red:before{background-color:green}',0);
+        // document.styleSheet[0].addRule('p::after{content:'addRule';}');
+        // document.styleSheet[0].insertRule('p::after{content:'insertRule';}' ,0);
         let style = document.createElement('style');
         try {
             style.appendChild(document.createTextNode(css));
-        } catch (ex) {
+        } catch (e) {
             style.sheet.cssText = css;
         }
         let head = document.getElementsByTagName('head')[0];
