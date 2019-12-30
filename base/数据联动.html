@@ -82,6 +82,12 @@
             area.appendChild(option);
         }
     }
+
+    // 打印当前选中的option
+    document.getElementById('province').onchange = function () {
+        // this为document.getElementById('province')
+        console.log(this.options[this.selectedIndex]);
+    }
 </script>
 </body>
 </html>
