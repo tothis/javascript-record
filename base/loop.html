@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>loop</title>
+</head>
+<body>
+<script>
+    /**
+     * for in循环有几个缺点
+     　　①数组的键名是数字 但是for in循环是以字符串作为键名 0 1 2等
+     　　②for in循环不仅遍历数字键名 还会遍历手动添加的其他键 甚至包括原型链上的键
+     　　③某些情况下 for in循环会以任意顺序遍历键名
+     　　for in循环主要是为遍历对象而设计的 不适用于遍历数组
+
+     for of循环
+     　　有着同for in一样的简洁语法 但是没有for in那些缺点
+     　　不同于forEach方法 它可以与break continue和return配合使用
+     　　提供了遍历所有数据结构的统一操作接口
+
+     break 跳出本层循环 继续执行循环后面的语句
+     　　　　如果循环有多层 则break只能跳出一层
+     　　 continue 跳过本次循环剩余的代码 继续执行下一次循环
+     　　　　①对与for循环 continue之后执行的语句 是循环变量更新语句i++
+     　　　　②对于while do-while循环 continue之后执行的语句 是循环条件判断
+     　　　　因此 使用这两个循环时 必须将continue放到i++之后使用 否则 continue将跳过i++进入死循环
+     */
+
+
+        // while循环
+    let var1 = 0;
+    while (var1 < 10) {
+        document.write(var1 + '<br>'); // 0 1 2 3 4 5 6 7 8 9
+        var1++;
+    }
+
+    // do while循环
+    let var2 = 10;
+    do {
+        document.write(var2 + '<br>'); // 10 9 8 7 6 5 4 3 2 1
+        var2--;
+    } while (var2 > 0);
+    document.write(var2 + '<br>'); // 0
+
+    // for循环
+    for (let i = 0; i < 10; i++) {
+        document.write(i + '<br>'); // 0 1 2 3 4 5 6 7 8 9
+    }
+
+    // 声明一个User类
+    function User() {
+        this.name = '李磊';
+        this.age = 18;
+        this.toString = function () {
+            return "User{" +
+                "name='" + this.name + '\'' +
+                ", age='" + this.age + '\'' +
+                '}';
+        }
+    }
+
+    // 实例化这个类
+    let user = new User();
+    // for in循环
+    for (key in user) {
+        console.log(user[key]);
+    }
+    console.log(user.toString());
+
+    // for of循环
+    let arr = ['a', 'b', 'c', 'd'];
+
+    for (let a in arr) {
+        console.log(a); // 0 1 2 3
+    }
+
+    for (let a of arr) {
+        console.log(a); // a b c d
+    }
+    /**
+     * for in循环读取键名 for of循环读取键值
+     * 如要通过for of循环 获取数组的索引 可使用数组entries方法和keys方法
+     */
+    console.log(arr.entries());
+    console.log(Object.entries(arr));
+    for (let a of arr.entries()) {
+        console.log(a);
+    }
+    for (let [k, v] of arr.entries()) {
+        console.log(k + ' : ' +v);
+    }
+    console.log(new Map(Object.entries(arr)));
+
+    let arrKeys = arr.keys();
+    console.log(arrKeys);
+    console.log(Object.keys(arr));
+    for (let a of arrKeys) {
+        console.log(a);
+    }
+
+    // Set 和 Map 结构
+    let set = new Set(['one', 'two', 'three', 'three']);
+    for (let e of set) {
+        console.log(e);
+    }
+
+    let map = new Map();
+    map.set('one', 1);
+    map.set('two', 2);
+    map.set('three', 3);
+    map.set('three', -3);
+    for (let [key, value] of map) {
+        console.log(key + ' : ' + value);
+    }
+</script>
+</body>
+</html>

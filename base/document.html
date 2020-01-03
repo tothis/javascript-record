@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>document</title>
+</head>
+<body>
+<script>
+    /**
+     * childNodes 获取节点 不同浏览器表现不同
+     * IE 只获取元素节点 非IE 获取元素节点与文本节点
+     */
+    for (childNode in childNodes) {
+        // 解决方案
+        if (childNode.nodeName == '#text') continue;
+        // 或者
+        if (childNode.nodeType != '3') continue;
+    }
+    /**
+     * children(建议使用) 获取元素节点 浏览器表现相同
+     * childrenfirstChild与firstElementChild
+     *      相同点 获取父节点下的第一个节点对象
+     *      不同点 firstchild IE6 7 8 第一个元素节点非IE6 7 8 第一个节点 文本节点或者元素节点firstElementChild IE6 7 8 不支持非IE6 7 8 第一个元素节点
+     */
+    function firstChild(obj) {
+        if (obj.firstElementChild) return obj.firstElementChild;
+        return obj.firstChild
+    }
+
+    /**
+     * lastChild与lastElementChild
+     * 相同点 获取父节点下的最后一个节点对象
+     * 不同点 lastchild IE6 7 8 最后一个元素节点
+     * 非IE6 7 8 最后一个节点 文本节点或者元素节点
+     * lastElementChild IE6 7 8 不支持
+     * 非IE6 7 8 最后一个元素节点
+     */
+
+    /**
+     * nextSibling与nextElementChild
+     * 相同点 获取后一个兄弟节点对象
+     * 不同点 nextSibling IE6 7 8 后一个兄弟元素节点
+     * 非IE6 7 8 后一个兄弟节点 文本节点或者元素节点
+     * lastElementChild IE6 7 8 不支持
+     * 非IE6 7 8 后一个兄弟元素节点
+     */
+
+    /**
+     * previousSibling与previousElementChild
+     * 相同点 获取前一个兄弟节点对象
+     * 不同点 previousSibling IE6 7 8 前一个兄弟元素节点
+     * 非IE6 7 8 前一个兄弟节点 文本节点或者元素节点
+     */
+
+    /**
+     * previousElementChild IE6 7 8 不支持
+     * 非IE6 7 8 前一个兄弟元素节点
+     * parentNode 获取父元素 不存在兼容性问题
+     * offsetParent 获取第一个设置定位的父元素
+     * offsetLeft 获取离第一个定位父元素的左距离
+     * offsetTop 获取离第一个定位父元素的上距离
+     */
+    // 只获取第一个匹配元素 结果为单个dom对象
+    document.querySelector('input[type=password]');
+    // 获取所有的匹配元素 结果为数组
+    document.querySelector('input[type=password]');
+</script>
+</body>
+</html>
