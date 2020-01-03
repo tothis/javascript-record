@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>object</title>
+</head>
+<body>
+<script>
+    // 创建js对象 key可以加双引号也可以不加双引号
+
+    // 通过new关键字创建对象
+    let obj = new Object();
+    // 添加属性
+    obj.name = '李磊';
+    // 添加方法
+    obj.age = function () {
+        return this.name + '年龄18岁';
+    };
+
+    // 通过字面量创建对象
+    obj = {
+        'name': '李磊',
+        "age": function () {
+            return this.name + '年龄18岁';
+        }
+    };
+
+    // 通过构造函数创建对象 建议方法名首字母大写
+    function Person(name, age) {
+        this.name = name;
+        this.age = function () {
+            return this.name + '年龄' + age + '岁';
+        }
+    }
+
+    // 创建两个Person对象
+    let person1 = Person('one', 18);
+    let person2 = Person('two', 20);
+
+    // 通过点语法访问对象属性
+    console.log(obj.name); // 李磊
+    // 不加小括号 会显示整个函数和值
+    console.log(obj.age); // 18
+    // 加小括号 只显示值
+    console.log(obj.age()); // 18
+
+    // 通过中括号法访问对象属性 可用变量或数字作为属性名 而点方法不可以
+    console.log(obj['name']); // 李磊
+    let age = 'age';
+    console.log(obj[age]); // 18
+
+    // this代表函数运行时 自动生成的一个内部对象 只能在函数内部使用
+    // 随着函数使用场合的不同 this的值会发生变化 this指向调用当前函数的对象
+    let index = 0;
+
+    function fun() {
+        // 此处的this代表就是全局对象window
+        this.index = 1;
+    }
+
+    // 使用window.fun()来调用函数 调用函数对象为window 所以this指向window
+    fun();
+    console.log(index); // 1
+
+    // 作为对象方法的调用 this指向当前实例对象
+    let point = {
+        x: 0,
+        y: 0,
+        moveTo: function (x, y) {
+            this.x += x;
+            this.y += y;
+        }
+    };
+    point.moveTo(10, 10);
+    console.log('x : ' + point.x + ', y : ' + point.y);  // 输出 x : 10, y : 10
+
+    // 使用point对象调用moveTo()函数 this指向point
+
+    // 构造函数 通过函数生成新对象 this指向这个新对象
+    function Student() {
+        this.name = '李磊';
+    }
+
+    let student = new Student();
+    console.log(student.name); // 李磊
+
+    // for in遍历对象
+    for (let attr in obj) {
+        if (typeof obj[attr] != 'function') {
+            console.log('属性操作 ' + obj[attr]);
+        }
+    }
+
+    // eval()函数会将传入的字符串当做js代码执行 如eval('2+3')返回5
+    // 把json字符串转化为对象
+    let json = '[{"name" : "one", "age" : 18}, {"name" : "two", "age" : 20}]';
+    // 把json字符串转化为js对象
+    let arr = eval(json);
+    // 对数据做解析
+    for (let i = 0; i < arr.length; i++) {
+        console.log('name : ' + arr[i].name + ', age : ' + arr[i].age);
+    }
+</script>
+</body>
+</html>
