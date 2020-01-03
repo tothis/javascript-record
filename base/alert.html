@@ -98,7 +98,7 @@
             animation-fill-mode: both;
         }
 
-        .alert {
+        .close {
             /* opacity: 0 !important; */
             /* filter: Alpha(opacity=0) !important; */
 
@@ -143,12 +143,12 @@
             margin-left: 24%;
         }
 
-        .close {
+        .close-btn {
             float: right;
             margin-top: -40px;
         }
 
-        .close:hover {
+        .close-btn:hover {
             color: #0080bb;
             cursor: pointer;
         }
@@ -184,19 +184,14 @@
 <body>
 <button id="show">显示</button>
 
-<div id="alert" class="alert" style="display: none">
-    <i class="fa close">&#xf00d;</i>
+<div id="alert" class="close" style="display: none">
+    <i class="fa close-btn">&#xf00d;</i>
     <div class="content">
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
-        <p>弹出层内容</p>
+        <p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p>
+        <p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p>
+        <p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p>
+        <p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p>
+        <p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p><p>弹出层内容</p>
     </div>
 </div>
 <div id="shadow" style="display: none">
@@ -206,7 +201,7 @@
     // 显示弹层
     document.getElementById('show').onclick = function () {
         // document.getElementById('alert').style.display = 'block';
-        document.getElementById('alert').classList.remove('alert');
+        document.getElementById('alert').classList.remove('close');
         document.getElementById('shadow').style.display = 'block';
 
         // css动画默认会自动展示 设置为display: none open动画时 设为block
@@ -214,15 +209,15 @@
     }
 
     // 隐藏弹层
-    document.getElementsByClassName('close')[0].onclick = function () {
+    document.getElementsByClassName('close-btn')[0].onclick = function () {
         // document.getElementById('alert').style.display = 'none';
-        document.getElementById('alert').classList.add('alert');
+        document.getElementById('alert').classList.add('close');
         document.getElementById('shadow').style.display = 'none';
     }
 
     // 阴影点击后隐藏弹层
     document.getElementById('shadow').onclick = function () {
-        document.getElementById('alert').classList.add('alert');
+        document.getElementById('alert').classList.add('close');
         document.getElementById('shadow').style.display = 'none';
     }
 </script>
