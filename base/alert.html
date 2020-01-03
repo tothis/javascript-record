@@ -184,7 +184,7 @@
 <body>
 <button id="show">显示</button>
 
-<div id="alert">
+<div id="alert" class="alert" style="display: none">
     <i class="fa close">&#xf00d;</i>
     <div class="content">
         <p>弹出层内容</p>
@@ -199,7 +199,7 @@
         <p>弹出层内容</p>
     </div>
 </div>
-<div id="shadow">
+<div id="shadow" style="display: none">
 
 </div>
 <script>
@@ -208,6 +208,9 @@
         // document.getElementById('alert').style.display = 'block';
         document.getElementById('alert').classList.remove('alert');
         document.getElementById('shadow').style.display = 'block';
+
+        // css动画默认会自动展示 设置为display: none open动画时 设为block
+        document.getElementById('alert').style.display = 'block';
     }
 
     // 隐藏弹层
@@ -220,6 +223,7 @@
     // 阴影点击后隐藏弹层
     document.getElementById('shadow').onclick = function () {
         document.getElementById('alert').classList.add('alert');
+        document.getElementById('shadow').style.display = 'none';
     }
 </script>
 </body>
