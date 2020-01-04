@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<h1 id="test" style="display: none" onclick="Util(this,{}).show()">文字</h1>
+<!--onclick="Util.show()"-->
+<h1 id="test" style="display: none">文字</h1>
 
 <script src="js/util.js"></script>
 <script>
@@ -154,12 +155,7 @@
 
     // 直接执行的匿名函数
     (function(){})();
-    // 是一个表达式，会强制其理解成函数直接量方式，也就是表达式方式创建函数，
-    // 它会返回函数对象的引用，最后使用小括号()调用此函数。
     (function(){}());
-// 如果不用外面包裹的小括号，{}就会理解为复合语句，
-// 那么function(){}就被理解为函数声明，但是没有标识符，所以会报错，
-// 使用小括号以后，就会变成表达式，也会被理解为直接量方式。
     !function(){}();
 
     // 匿名函数

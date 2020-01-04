@@ -1,5 +1,5 @@
 // 前面加;防止跟其他js压缩时报错
-;(function (that) {
+;(function (global) {
     // 开启严格模式
     'use strict';
 
@@ -24,6 +24,6 @@
         });
     } else { // 注册全局变量 兼容直接使用script标签引入插件
         // 等同于window.Util = Util
-        that.Util = Util;
+        global.Util = Util;
     }
 })(this); // 此处的this为window对象
