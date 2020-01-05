@@ -6,13 +6,19 @@
 </head>
 <body>
 
-<!--onclick="Util.show()"-->
 <h1 id="test" style="display: none">文字</h1>
 
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
+<script src="js/require.js"></script>
 <script src="js/util.js"></script>
 <script>
+    require([lib/moduleA], function(A, B) {
+        console.log(A)
+        console.log(B)
+    });
+    util.show('#test');
 
-    // new Util(document.getElementById('test'),{}).show();
+    // new Util('#test', {}).show();
 
     function test(var1) {
         return function (var2) {
@@ -56,23 +62,35 @@
 
     console.log('----');
 
-    function A() {
+    function A(var1, var2) {
+        this.var1 = var1;
+        this.var2 = var2;
     }
 
-    let a = new A();
+    let a = new A('one', 'two');
     console.log(Object.getPrototypeOf(a) === A.prototype);
-    // Object.getPrototypeOf(a) === A.prototype
     console.log(a instanceof A); // true
+    console.log(a.constructor === A); // true
+    /**
+     * 1. isPrototypeOf() 判断某个prototype对象和某个实例之间的关系
+     * 2. hasOwnProperty() 判断某个对象是否包含某个属性 非继承
+     * 3. in 判断是否在某个对象里
+     */
     // Object.prototype.isPrototypeOf(a) === true
+    // console.log('one' in a); // true
     console.log(a instanceof Object); // true
 
     // instanceof 可在继承关系中判断一个实例是否属于它的父类型
-    function B() {
+    function B(var3) {
+        this.var3 = var3;
     }
 
     // B基础A js原型继承
     B.prototype = new A();
     let b = new B();
+    console.log(b.hasOwnProperty('var1')); // true
+    console.log(b.hasOwnProperty('var2')); // false
+    console.log(b.hasOwnProperty('var3')); // true
     console.log(b instanceof B) // true
     console.log(b instanceof A) // true
 
@@ -154,9 +172,9 @@
     console.log(max(1, "2", '3'));
 
     // 直接执行的匿名函数
-    (function(){})();
-    (function(){}());
-    !function(){}();
+    (function(){console.log('test');})();
+    (function(){console.log('test');}());
+    !function(){console.log('test');}();
 
     // 匿名函数
     (function (name) {
