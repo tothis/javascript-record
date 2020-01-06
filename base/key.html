@@ -35,11 +35,17 @@
         p::after {
             content: 'test';
         }
+
+        span::before {
+            /* 获取自定义属性的值 */
+            content: attr(data);
+        }
     </style>
 </head>
 <body>
 <input>
 <p></p>
+<span data="span"></span>
 <div class="content">
     <div id="block"></div>
 </div>
@@ -146,6 +152,13 @@
         }
         let head = document.getElementsByTagName('head')[0];
         head.appendChild(style);
+
+        let p = document.getElementsByTagName('p')[0];
+        let span = document.getElementsByTagName('span')[0];
+        // span.innerText = document.defaultView.getComputedStyle(p,'after').getPropertyValue('content');
+        // span.innerText = document.defaultView.getComputedStyle(p,':after').getPropertyValue('content');
+        // span.innerText = document.defaultView.getComputedStyle(p,'::after').getPropertyValue('content');
+        span.setAttribute('data', document.defaultView.getComputedStyle(p,'::after').getPropertyValue('content'));
     }
 
     changeAffter("p::after{content:'后缀';}");

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>module</title>
+</head>
+<body>
+
+<script>
+    /**
+     * requirejs&curl.js(AMD) seajs(CMD) commonjs
+     * CMD Common Module Definition 服务端使用 同步
+     * AMD Asynchronous Module Definition 客户端使用 异步
+     *
+     * CommonJS为NodeJS模块系统参照实现的规范 Browserify是目前最常用的CommonJS格式转换的工具
+     * 模块引用require 模块定义exports 模块标识module global
+     * require()引入外部模块
+     * exports导出当前模块方法或变量
+     * module对象就代表模块本身
+     * 浏览器不兼容CommonJS原因 在于缺少如上四个Node.js环境的变量
+     *
+     * AMD和CMD最大的区别是对依赖模块的执行时机处理不同 而不是加载的时机或者方式不同 二者皆为异步加载模块
+     * AMD依赖前置 js可以方便知道依赖模块是谁 立即加载 而CMD就近依赖 需要使用把模块变为字符串解析一遍才
+     * 知道依赖了那些模块 牺牲性能来带来开发便利 实际上解析模块用的时间短到可以忽略
+     */
+        // 在CommonJS中 使用全局性方法require()加载模块
+    var math = require('math');
+    math.add(2, 3); // 5
+
+    // commonJs 规范
+    // 同步应用
+
+    // 模块定义 module.exports
+    var x = 5;
+    var addX = function (value) {
+        return value + x;
+    };
+    module.exports.x = x;
+    module.exports.addX = addX;
+
+    // 模块引用 require
+    var example = require('./example.js');
+
+    console.log(example.x); // 5
+    console.log(example.addX(1)); // 6
+
+    // 与AMD规范的兼容性
+    define(function (require, exports, module) {
+        var someModule = require("someModule");
+        var anotherModule = require("anotherModule");
+
+        someModule.doTehAwesome();
+        anotherModule.doMoarAwesome();
+
+        exports.asplode = function () {
+            someModule.doTehAwesome();
+            anotherModule.doMoarAwesome();
+        };
+    });
+
+    // AMD 规范
+    // 异步模块引用
+
+    // 模块定义 define
+
+    // 独立模块定义
+    define(function () {
+        return {
+            method1: function () {
+            },
+            method2: function () {
+            },
+        };
+    });
+    // 非独立模块定义
+    define(['module1', 'module2'], function (m1, m2) {
+        //module1 module2 依赖的模块 m1,m2 分别对应module1 与 module2
+        return {
+            method: function () {
+                m1.methodA();
+                m2.methodB();
+            }
+        };
+    });
+    // 模块引用 require
+    require(['foo', 'bar'], function (foo, bar) {
+        foo.doSomething();
+    });
+
+    // ES6 moduel 模块定义 export
+    //导出变量
+    export var color = "red";
+    export let name = "cz";
+    export const age = 25;
+
+    //导出函数
+    export function add(num1, num2) {
+        return num1 + num2;
+    }
+
+    //导出类
+    export class Rectangle {
+        constructor(length, width) {
+            this.length = length;
+            this.width = width;
+        }
+    }
+
+    function multiply(num1, num2) {
+        return num1 * num2;
+    }
+
+    // 导出对象 即导出引用
+    export {multiply}
+    // 模块引用 import
+    import {identifier1, identifier2} from "./example.js"
+
+</script>
+</body>
+</html>
