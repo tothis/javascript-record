@@ -63,7 +63,18 @@
     // 只获取第一个匹配元素 结果为单个dom对象
     document.querySelector('input[type=password]');
     // 获取所有的匹配元素 结果为数组
-    document.querySelector('input[type=password]');
+    document.querySelectorAll('input[type=password]');
+
+    // test为不存在的class 返回值为空数组
+    console.log(document.getElementsByClassName('test') === null); // false
+    console.log(document.getElementsByClassName('test').length); // 0
+    // test为不存在的id 返回值为null
+    console.log(document.getElementById('test') === null); // true
+    console.log(document.querySelector('#test') === null); // true
+    // 直接报错
+    console.log(document.querySelector('#test').getAttribute('name') === null);
+    // test为存在的id name为不存在的属性
+    console.log(document.querySelector('#test').getAttribute('name') === null); // true
 </script>
 </body>
 </html>
