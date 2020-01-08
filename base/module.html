@@ -8,13 +8,17 @@
 
 <script>
     /**
-     * requirejs&curl.js(AMD) seajs(CMD) commonjs
-     * CMD Common Module Definition 服务端使用 同步
-     * AMD Asynchronous Module Definition 客户端使用 异步
+     * commonjs为nodejs后端模块开发指定的cmd规范
+     * sea.js为nodejs为后端开发指定的cmd规范
+     * requirejs为前端开发指定的amd规范
+     *
+     * seajs&commonjs(CMD) requirejs&curl.js(AMD)
+     * CMD Common Module Definition 同步加载模块
+     * AMD Asynchronous Module Definition 异步加载模块
      *
      * CommonJS为NodeJS模块系统参照实现的规范 Browserify是目前最常用的CommonJS格式转换的工具
      * 模块引用require 模块定义exports 模块标识module global
-     * require()引入外部模块
+     * require引入外部模块
      * exports导出当前模块方法或变量
      * module对象就代表模块本身
      * 浏览器不兼容CommonJS原因 在于缺少如上四个Node.js环境的变量
@@ -23,14 +27,11 @@
      * AMD依赖前置 js可以方便知道依赖模块是谁 立即加载 而CMD就近依赖 需要使用把模块变为字符串解析一遍才
      * 知道依赖了那些模块 牺牲性能来带来开发便利 实际上解析模块用的时间短到可以忽略
      */
-        // 在CommonJS中 使用全局性方法require()加载模块
+    // 在commonjs中 使用全局性方法require()加载模块
     var math = require('math');
     math.add(2, 3); // 5
 
-    // commonJs 规范
-    // 同步应用
-
-    // 模块定义 module.exports
+    // commonjs 模块定义 module.exports
     var x = 5;
     var addX = function (value) {
         return value + x;
@@ -58,12 +59,9 @@
         };
     });
 
-    // AMD 规范
-    // 异步模块引用
+    // AMD 异步模块引用
 
     // 模块定义 define
-
-    // 独立模块定义
     define(function () {
         return {
             method1: function () {
@@ -72,9 +70,9 @@
             },
         };
     });
-    // 非独立模块定义
+    // 多模块定义
     define(['module1', 'module2'], function (m1, m2) {
-        //module1 module2 依赖的模块 m1,m2 分别对应module1 与 module2
+        // module1 module2 依赖的模块 m1,m2 分别对应module1 与 module2
         return {
             method: function () {
                 m1.methodA();
