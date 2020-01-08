@@ -9,7 +9,6 @@
 <script>
     /**
      * commonjs为nodejs后端模块开发指定的cmd规范
-     * sea.js为nodejs为后端开发指定的cmd规范
      * requirejs为前端开发指定的amd规范
      *
      * seajs&commonjs(CMD) requirejs&curl.js(AMD)
@@ -27,11 +26,11 @@
      * AMD依赖前置 js可以方便知道依赖模块是谁 立即加载 而CMD就近依赖 需要使用把模块变为字符串解析一遍才
      * 知道依赖了那些模块 牺牲性能来带来开发便利 实际上解析模块用的时间短到可以忽略
      */
-    // 在commonjs中 使用全局性方法require()加载模块
+    // commonjs 使用全局方法require()加载模块
     var math = require('math');
     math.add(2, 3); // 5
 
-    // commonjs 模块定义 module.exports
+    // commonjs模块定义 module.exports
     var x = 5;
     var addX = function (value) {
         return value + x;
@@ -47,21 +46,19 @@
 
     // 与AMD规范的兼容性
     define(function (require, exports, module) {
-        var someModule = require("someModule");
-        var anotherModule = require("anotherModule");
+        var moduleA = require("moduleA");
+        var moduleB = require("moduleB");
 
-        someModule.doTehAwesome();
-        anotherModule.doMoarAwesome();
+        moduleA.one();
+        moduleB.two();
 
         exports.asplode = function () {
-            someModule.doTehAwesome();
-            anotherModule.doMoarAwesome();
+            moduleA.one();
+            moduleB.two();
         };
     });
 
-    // AMD 异步模块引用
-
-    // 模块定义 define
+    // requirejs 定义模块 define
     define(function () {
         return {
             method1: function () {
@@ -81,38 +78,37 @@
         };
     });
     // 模块引用 require
-    require(['foo', 'bar'], function (foo, bar) {
-        foo.doSomething();
+    require(['one', 'two'], function (one, two) {
+        one.doSomething();
     });
 
     // ES6 moduel 模块定义 export
-    //导出变量
-    export var color = "red";
-    export let name = "cz";
-    export const age = 25;
+    // 导出变量
+    export var var1 = 1;
+    export let var2 = '2';
+    export const var3 = "3";
 
-    //导出函数
+    // 导出函数
     export function add(num1, num2) {
         return num1 + num2;
     }
 
-    //导出类
-    export class Rectangle {
+    // 导出类
+    export class Test {
         constructor(length, width) {
             this.length = length;
             this.width = width;
         }
     }
 
-    function multiply(num1, num2) {
+    function testMethod(num1, num2) {
         return num1 * num2;
     }
 
     // 导出对象 即导出引用
-    export {multiply}
+    export {testMethod}
     // 模块引用 import
     import {identifier1, identifier2} from "./example.js"
-
 </script>
 </body>
 </html>
