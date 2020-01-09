@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>top</title>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        #scroll {
+            display: none;
+        }
+
+        #scroll::after {
+            content: '\f004';
+            font-family: fontawesome;
+            font-size: 50px;
+            color: white;
+            right: 50px;
+            bottom: 50px;
+            cursor: pointer;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <img src="image/image1.png">
+    <img src="image/image1.png">
+    <img src="image/image1.png">
+    <img src="image/image1.png">
+    <img src="image/image1.png">
+</div>
+<div id="scroll"></div>
+</body>
+<script type="text/javascript">
+    let scrollTop;
+    let scroll = document.getElementById('scroll');
+
+    scroll.onclick = function () {
+        let timer = setInterval(function () {
+            window.scrollBy(0, -20);
+            if (scrollTop == 0)
+                clearInterval(timer);
+        }, 2);
+    }
+
+    // 窗口滚动检测
+    window.onscroll = function () {
+        scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+        scroll.style.display = (scrollTop >= 300) ? 'block' : 'none';
+    }
+</script>
+</html>
