@@ -34,7 +34,7 @@
             height: 100%;
             display: flex;
             /* 动画效果 */
-            transition: left 0.4s ease-in-out;
+            transition: left .6s ease-in-out;
         }
 
         .image-container > img {
@@ -94,6 +94,16 @@
         img:nth-of-type(odd) {
             -webkit-filter: grayscale(100%);
         }
+
+        img {
+            transition: .1s;
+        }
+
+        img:hover {
+            cursor: pointer;
+            transition: .6s;
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
@@ -112,15 +122,13 @@
     </div>
 </div>
 <script>
-    setTimeout(right(), 2000);
-
     // 加载按钮id
     let btnList = document.getElementsByClassName('btn');
     for (let i = 0; i < btnList.length; i++) {
         btnList[i].onclick = function () {
             _switch(this);
         };
-        btnList[i].id = ('id', 'btnId_' + i);
+        btnList[i].id = 'btnId_' + i;
     }
 
     // 保存左边距离
@@ -181,10 +189,9 @@
         }
     }
 
-    var interval;
+    var interval = setInterval(right, 1500);
 
     function right() {
-        clearInterval(interval);
         // -200 三张图片
         if (leftDistance == -200) {
             leftDistance = 0;
@@ -205,11 +212,19 @@
                 $('#btnId_' + i).removeClass('on');
             }
         }
-        /**
-         * jquery发现无if判断的递归后 会直接报错Maximum call stack size exceeded(超过最大调用堆栈大小)
-         * 使用引号包括函数 jquery不会直接检查递归
-         */
-        interval = setInterval('right()', 2000);
+    }
+
+    let container = document.getElementsByClassName('container')[0];
+    // 鼠标经过时清除定时器
+    container.onmouseover = function () {
+        clearInterval(interval);
+    }
+    // 鼠标移开时设置定时器
+    container.onmouseout = function () {
+        // 先清除定时器
+        clearInterval(interval);
+        // 开启定时器
+        interval = setInterval(right, 2000);
     }
 </script>
 </body>
