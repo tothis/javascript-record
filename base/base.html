@@ -34,6 +34,21 @@
     // 包几层就可传几次参数
     console.log(test('one')('two')('three'));
 
+    /**
+     * 普通自定义属性只可以通过getAttribute获取值
+     * html5自定义'data-'前缀属性还可以通过dataset获取值
+     */
+    // <p user="lilei"></p>
+    document.getElementById('test').getAttribute('user');
+    document.getElementById('test').setAttribute('user', 'lei');
+    // <p data-test="lilei"></p>
+    document.getElementById('test').dataset.test;
+    document.getElementById('test').dataset.test == 'lei';
+    // <p data-user-name="lilei"></p>
+    // data-多个单词组成的属性 获取时使用驼峰风格
+    document.getElementById('test').dataset.userName;
+    document.getElementById('test').dataset.userName = 'lei';
+
     // typeof使用 typeof返回值为字符串类型
     console.log(typeof x); // undefined
     console.log(typeof (true)); // boolean
