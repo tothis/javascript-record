@@ -32,12 +32,12 @@
     p.innerText = text;
 
     document.getElementsByTagName('button')[0].onclick = function () {
-        if (this.innerText == 'show') {
+        if (this.innerText === 'show') {
             p.classList.add('show');
             this.innerText = "hide";
         } else {
             p.classList.remove('show');
-            this.innerText = 'hide';
+            this.innerText = 'show';
         }
     }
 </script>
