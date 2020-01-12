@@ -21,6 +21,17 @@
             /*-webkit-tap-highlight-color: transparent;*/
         }
 
+        /*.input:focus {*/
+        /*    border: 2px solid #39a79f;*/
+        /*    box-shadow: 0px 0px 10px 0px rgba(184, 186, 194, 0.5);*/
+        /*}*/
+
+        input:focus {
+            border-color: white;
+            -webkit-box-shadow: 0 0 4rem rgba(255, 255, 255, 1);
+            box-shadow: 0 0 4rem rgba(255, 255, 255, 1);
+        }
+
         .title {
             position: absolute;
             margin-top: 5rem;
@@ -41,15 +52,16 @@
         }
 
         .account-input {
+            border-radius: 1.2rem;
+            padding-left: 2.6rem;
             color: white;
-            width: 60%;
-            height: 9rem;
+            width: 58%;
+            height: 6rem;
             font-size: 2.2rem;
             position: absolute;
             left: 34%;
-            border: 0px solid #ffffff;
-            padding: 0;
-            margin: 5px 0 0 0;
+            border: 0.2rem;
+            margin-top: 1.4rem;
             background-color: rgba(0, 0, 0, 0);
         }
 
@@ -122,6 +134,7 @@
         input:-ms-input-placeholder { /* Internet Explorer 10-11 */
             color: #efe9e5;
         }
+
         /* placeholder结束 */
 
         /*check开始*/
