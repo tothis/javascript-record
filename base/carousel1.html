@@ -222,7 +222,8 @@
     container.onmouseout = function () {
         // 先清除定时器
         clearInterval(interval);
-        // 开启定时器
+        // 往右滑动并开启定时器
+        right();
         interval = setInterval(right, 2000);
     }
 </script>
