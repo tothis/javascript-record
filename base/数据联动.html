@@ -45,8 +45,8 @@
     function resetCity() {
         // 清空城市数据
         city.length = 1;
-        // 清空地区数据
-        area.length = 1;
+        // 重置地区数据
+        resetArea();
 
         // 当前省份位置
         let provinceIndex = province.selectedIndex;
@@ -83,11 +83,24 @@
         }
     }
 
-    // 打印当前选中的option
-    document.getElementById('province').onchange = function () {
-        // this为document.getElementById('province')
-        console.log(this.options[this.selectedIndex]);
+    /**
+     * 设置select选中的值
+     * @param select select文档对象
+     * @param checkValue 目标option值
+     */
+    function selectChecked(select, value) {
+        let options = select.options;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === value) {
+                options[i].selected = true;
+                break; // 结束循环
+            }
+        }
     }
+
+    // 设置select选中值
+    selectChecked(document.getElementById('province'), '3');
+    resetCity();
 </script>
 </body>
 </html>
