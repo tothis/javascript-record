@@ -24,7 +24,7 @@
             display: inline-block;
         }
 
-        .image-container {
+        .content {
             position: relative;
             left: 0%;
             /* 三张图片为300% */
@@ -35,7 +35,7 @@
             transition: left .6s ease-in-out;
         }
 
-        .image-container > img {
+        .content > img {
             /* 三张图片除以3 */
             width: calc(100% / 3);
         }
@@ -60,7 +60,7 @@
             color: #fff;
         }
 
-        .spot {
+        .switch {
             padding: 1% 0;
             display: flex;
             text-align: center;
@@ -94,11 +94,13 @@
         }
 
         img {
+            /* 图片收缩 */
             transition: .1s;
         }
 
         img:hover {
             cursor: pointer;
+            /* 图片放大 */
             transition: .6s;
             transform: scale(1.2);
         }
@@ -106,114 +108,86 @@
 </head>
 <body>
 <div class="container">
-    <div class="image-container">
+    <div class="content">
         <img src="./image/image1.png" ondragstart="return false;">
         <img src="./image/image1.png" ondragstart="return false;">
         <img src="./image/image1.png" ondragstart="return false;">
     </div>
-    <div class="btn-left" onClick='left()'><i class="fa fa-angle-left"></i></div>
-    <div class="btn-right" onClick='right()'><i class="fa fa-angle-right"></i></div>
-    <div class="spot">
-        <div class="btn on">第1张</div>
-        <div class="btn">第2张</div>
-        <div class="btn">第3张</div>
+    <div class="btn-left" onClick='__switch(false)'><i class="fa fa-angle-left"></i></div>
+    <div class="btn-right" onClick='__switch(true)'><i class="fa fa-angle-right"></i></div>
+    <div class="switch">
+        <!--        <div class="btn on">第1张</div>-->
+        <!--        <div class="btn">第2张</div>-->
+        <!--        <div class="btn">第3张</div>-->
     </div>
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    // 加载按钮id
-    let btnList = document.getElementsByClassName('btn');
-    for (let i = 0; i < btnList.length; i++) {
-        btnList[i].onclick = function () {
-            _switch(this);
-        };
-        btnList[i].id = 'btnId_' + i;
+    const time = 3000;
+
+    let content = document.querySelector('.content');
+    let switchBtn = document.querySelector('.switch');
+
+    let list = content.children;
+
+    for (let i = 0; i < list.length; i++) {
+        let ele = document.createElement('div');
+        ele.innerText = '第' + (i + 1) + '张';
+        ele.className = 'btn';
+        ele.onclick = _switch;
+        switchBtn.appendChild(ele);
     }
+    switchBtn.children[0].classList.add('on');
 
-    // 保存左边距离
-    var leftDistance = 0;
-    // 保存当前图片索引
-    var currentIndex = 0;
-    // 所有下侧按钮数量
-    var btnNum = $('.btn').length;
+    let btnList = switchBtn.children;
 
-    // 根据按钮下标切换图片
-    function _switch(that) {
+    let imageShow = document.querySelector('.content').style;
+
+    let index = 0; // 轮播索引
+
+    // 按钮下标切换图片
+    function _switch() {
         for (let i = 0; i < btnList.length; i++) {
-            if (that.id == 'btnId_' + i) {
-                $(that).addClass('on');
-
-                $('.image-container').css('left', -i * 100 + '%');
-
-                currentIndex = i;
-
-                leftDistance = -i * 100;
-                // 如下为一个图片配置一次
-                // if (i == 0) { // 第一张图片
-                // $('.image-container').css('left','0');
-                // leftDistance = 0;
-                // }
-                // if (i == 1) { // 第二张图片
-                // $('.image-container').css('left','-100%');
-                // leftDistance = -100;
-                // }
-                // if (i == 2) { // 第三张图片
-                // $('.image-container').css('left','-200%');
-                // leftDistance = -200;
-                // }
-                // currentIndex = i;
-            } else if (that.id != 'btnId_' + i) {
-                $('#btnId_' + i).removeClass('on');
-            }
+            btnList[i].classList.remove('on');
         }
+        this.classList.add('on');
+        // 获取按钮索引
+        index = [].indexOf.call(switchBtn.children, this);
+        // 获取当前按钮索引
+        imageShow.left = -index * 100 + '%';
     }
 
-    function left() {
-        if (leftDistance == 0) {
-            // 三张图片 -200%
-            $('.image-container').css('left', '-200%');
-            leftDistance = -200;
-            currentIndex = btnNum - 1;
+    function __switch(flag) {
+        if (flag) {
+            switch (index) {
+                case btnList.length - 1:
+                    index = 0;
+                    break;
+                default:
+                    index++;
+            }
         } else {
-            currentIndex--;
-            leftDistance += 100;
-            $('.image-container').css('left', leftDistance + '%');
-        }
-        for (let i = 0; i < btnNum; i++) {
-            if (i == currentIndex) {
-                $('#btnId_' + i).addClass('on');
-            } else {
-                $('#btnId_' + i).removeClass('on');
+            switch (index) {
+                case 0:
+                    index = btnList.length - 1;
+                    break;
+                default:
+                    index--;
             }
         }
+        imageShow.left = -index * 100 + '%';
+        console.log(imageShow.left);
+        for (let i = 0; i < btnList.length; i++) {
+            btnList[i].classList.remove('on');
+        }
+        btnList[index].classList.add('on');
     }
 
-    var interval = setInterval(right, 1500);
+    var interval = setInterval(() => {
+        __switch(true);
+    }, time);
 
-    function right() {
-        // -200 三张图片
-        if (leftDistance == -200) {
-            leftDistance = 0;
-            currentIndex = 0;
-            $('.image-container').css('left', '0%');
-        } else {
-            currentIndex++
-            leftDistance -= 100;
-            $('.image-container').css('left', leftDistance + '%');
-        }
-        if (currentIndex >= btnNum) {
-            currentIndex = 0;
-        }
-        for (let i = 0; i < btnNum; i++) {
-            if (i == currentIndex) {
-                $('#btnId_' + i).addClass('on');
-            } else {
-                $('#btnId_' + i).removeClass('on');
-            }
-        }
-    }
-
-    let container = document.getElementsByClassName('container')[0];
+    let container = document.querySelector('.container');
     // 鼠标经过时清除定时器
     container.onmouseover = function () {
         clearInterval(interval);
@@ -223,8 +197,10 @@
         // 先清除定时器
         clearInterval(interval);
         // 往右滑动并开启定时器
-        right();
-        interval = setInterval(right, 2000);
+        __switch(true);
+        interval = setInterval(() => {
+            __switch(true);
+        }, time);
     }
 </script>
 </body>

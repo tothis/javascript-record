@@ -7,23 +7,23 @@
 <body>
 <script>
     /**
-        for in循环缺点
-         　　①数组的键名是数字 但是for in循环是以字符串作为键名 0 1 2等
-         　　②for in循环不仅遍历数字键名 还会遍历手动添加的其他键 甚至包括原型链上的键
-         　　③某些情况下 for in循环会以任意顺序遍历键名
-         　　for in循环主要是为遍历对象而设计的 不适用于遍历数组
+     for in循环缺点
+     　　①数组的键名是数字 但是for in循环是以字符串作为键名 0 1 2等
+     　　②for in循环不仅遍历数字键名 还会遍历手动添加的其他键 甚至包括原型链上的键
+     　　③某些情况下 for in循环会以任意顺序遍历键名
+     　　for in循环主要是为遍历对象而设计的 不适用于遍历数组
 
-        for of循环
-        　　有着同for in一样的简洁语法 但是没有for in那些缺点
-        　　不同于forEach方法 它可以与break continue和return配合使用
-        　　提供了遍历所有数据结构的统一操作接口
+     for of循环
+     　　有着同for in一样的简洁语法 但是没有for in那些缺点
+     　　不同于forEach方法 它可以与break continue和return配合使用
+     　　提供了遍历所有数据结构的统一操作接口
 
-        break 跳出本层循环 继续执行循环后面的语句
-            如果循环有多层 则break只能跳出一层
-            continue 跳过本次循环剩余的代码 继续执行下一次循环
-            ①对与for循环 continue之后执行的语句 是循环变量更新语句i++
-            ②对于while do-while循环 continue之后执行的语句 是循环条件判断
-            因此 使用这两个循环时 必须将continue放到i++之后使用 否则 continue将跳过i++进入死循环
+     break 跳出本层循环 继续执行循环后面的语句
+     如果循环有多层 则break只能跳出一层
+     continue 跳过本次循环剩余的代码 继续执行下一次循环
+     ①对与for循环 continue之后执行的语句 是循环变量更新语句i++
+     ②对于while do-while循环 continue之后执行的语句 是循环条件判断
+     因此 使用这两个循环时 必须将continue放到i++之后使用 否则 continue将跳过i++进入死循环
      */
 
     // while循环
@@ -86,7 +86,7 @@
         console.log(a);
     }
     for (let [k, v] of arr.entries()) {
-        console.log(k + ' : ' +v);
+        console.log(k + ' : ' + v);
     }
     console.log(new Map(Object.entries(arr)));
 
@@ -111,6 +111,34 @@
     for (let [key, value] of map) {
         console.log(key + ' : ' + value);
     }
+
+    /**
+     * 循环中使用var的问题
+     */
+    // 正常情况
+    for (var i = 0; i < 10; i++) {
+        console.log(i);
+    }
+    // 非正常情况
+    var a = [];
+    for (var i = 0; i < 10; i++) {
+        // 作用域a
+        a[i] = function () {
+            // 作用域b
+            console.log(i);
+        };
+    }
+    a[5](); // 10
+
+    // 使用自执行函数解决
+    for (var i = 0; i < 10; i++) {
+        (function (j) {
+            a[j] = function () {
+                console.log(j);
+            };
+        })(i);
+    }
+    a[5](); // 5
 </script>
 </body>
 </html>

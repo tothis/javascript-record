@@ -100,6 +100,79 @@
     for (let i = 0; i < arr.length; i++) {
         console.log('name : ' + arr[i].name + ', age : ' + arr[i].age);
     }
+
+    console.log('----------')
+
+    /**
+     * call apply bind
+     * 作用相同 可改变某个函数运行时this指向
+     * 区别 apply所有参数必须放在数组传如 bind返回值为函数需要手动执行
+     */
+
+    function obj1() {
+    }
+
+    obj1.prototype = {
+        name: 'obj1',
+        age: 1,
+        out: function () {
+            console.log('name -> ' + this.name + ' age -> ' + this.age);
+        }
+    };
+
+    var obj2 = new obj1;
+    obj2.out();
+
+    var param = {
+        name: 'obj2',
+        age: 2
+    };
+
+    // 方法'劫持'
+    obj2.out.call(param);
+    obj2.out.apply(param);
+    obj2.out.bind(param)();
+
+    // 改变作用域
+    var name = "name1";
+    var obj3 = {
+        name: "name2"
+    };
+
+    function out() {
+        return this.name;
+    }
+
+    console.log(out.call(this)); // name1
+    console.log(out.call(obj3)); // name2
+
+    // 实现继承
+    // 父类
+    function Person(name, age) {
+        this.out = function () {
+            return 'name ' + name + ' age ' + age + ' address ' + this.address;
+        }
+    }
+
+    // 子类
+    function Chinese(name, age, address) {
+        Person.call(this, name, age);
+        this.address = address;
+        // this.out = function () {
+        //     return '中国';
+        // }
+    }
+
+    // 子类
+    function American(name, age, address) {
+        Person.apply(this, [name, age]);
+        this.address = address;
+    }
+
+    let chinese = new Chinese('李磊', 18, '上海');
+    console.log(chinese.out());
+    let american = new American('frank', 20, '华盛顿');
+    console.log(american.out());
 </script>
 </body>
 </html>
