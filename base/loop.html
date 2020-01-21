@@ -139,6 +139,49 @@
         })(i);
     }
     a[5](); // 5
+
+    // 将一个数组添加到另一个数组的尾部
+    // es5写法
+    let arr1 = [0, 1, 2];
+    let arr2 = [3, 4, 5];
+    // Array.prototype.push.apply(arr1, arr2);
+    // es6写法
+    arr1.push(...arr2);
+
+    const map1 = arr1.map(x => x * 2);
+    console.log(arr1);
+    console.log(map1);
+
+    const map2 = arr1.map(x => {
+        if (x % 2 !== 0) {
+            return x * 2;
+        }
+    });
+    // map()方法会创建一个新数组 但新数组并不是在遍历完arr1后被赋值的 而是每遍历一次获取一个值
+    console.log(map2); // [undefined, 2, undefined, 6, undefined, 10]
+
+    /**
+     * map回调函数参数
+     * 当前正在遍历的元素
+     * 当前元素索引
+     * 原数组本身
+     */
+    const map3 = arr1.map((var1, var2, var3) => {
+        if (var1 % 2 === 0) {
+            return var1 / 2;
+        }
+        return var1;
+    });
+    console.log(map3, 'map3');
+
+    arr1.forEach((item, index) => {
+            console.log('index : ' + index + ' item : ' + index);
+            // 删除下标为var2后的一个元素 为0数组不变
+            arr1.splice(index, 1);
+        }
+    );
+
+    console.log(arr1);
 </script>
 </body>
 </html>
