@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>form</title>
+</head>
+<body>
+<form>
+    <!-- <textarea id="text" autofocus="autofocus"></textarea> -->
+    <input name="text" id="text" value="点击获取焦点">
+    <input type="submit" value="提交">
+    <button onclick="ele.focus()">获取焦点</button>
+    <button onclick="ele.blur()">失去焦点</button>
+</form>
+<script>
+    const form = document.querySelector('form');
+
+    const ele = document.createElement('textarea');
+    ele.name = 'text';
+    // ele.autofocus = 'autofocus';
+    // ele.setAttribute('autofocus', 'autofocus');
+    const text = document.createTextNode('文本文本文本');
+    ele.appendChild(text);
+    form.appendChild(ele);
+
+    document.getElementById('text').onfocus = function () {
+        console.log('获取焦点');
+    }
+    document.getElementById('text').onblur = function () {
+        console.log('失去焦点');
+    }
+
+    form.onsubmit = function () {
+        console.log(serializeForm(form));
+        return false;
+    }
+
+    // 组合url
+    function serializeElement(element) {
+
+        if (element.name === '') {
+            return;
+        }
+
+        let tagName = element.tagName.toLowerCase();
+        let param;
+        if (tagName === 'select') {
+            param = [element.name, element.value];
+        }
+        if (tagName === 'textarea') {
+            param = [element.name, element.value]
+        }
+        if (tagName === 'input') {
+            switch (element.type.toLowerCase()) {
+                case 'submit':
+                    break;
+                case 'radio':
+                case 'checkbox':
+                    if (element.checked) {
+                        param = [element.name, element.value];
+                    }
+                    break;
+                default:
+                    param = [element.name, element.value];
+                    break;
+            }
+        }
+        if (param) {
+            let key = encodeURIComponent(param[0]);
+            if (key.length === 0)
+                return;
+            if (param[1].constructor !== Array)
+                param[1] = [param[1]];
+            let values = param[1];
+            let result = [];
+            for (let i = 0; i < values.length; i++) {
+                result.push(key + '=' + encodeURIComponent(values[i]));
+            }
+            return result.join('&');
+        }
+    }
+
+    // 调用方法
+    function serializeForm(form) {
+        // 获取指定form中的所有的input select textarea对象
+        let elements = new Array();
+        let inputs = form.getElementsByTagName('input');
+        for (let i = 0; i < inputs.length; i++) {
+            elements.push(inputs[i]);
+        }
+        inputs = form.getElementsByTagName('select');
+        for (let i = 0; i < inputs.length; i++) {
+            elements.push(inputs[i]);
+        }
+        inputs = form.getElementsByTagName('textarea');
+        for (let i = 0; i < inputs.length; i++) {
+            elements.push(inputs[i]);
+        }
+
+        let result = new Array();
+        for (let i = 0; i < elements.length; i++) {
+            let queryComponent = serializeElement(elements[i]);
+            if (queryComponent) {
+                result.push(queryComponent);
+            }
+        }
+        return result.join('&');
+    }
+</script>
+</body>
+</html>
