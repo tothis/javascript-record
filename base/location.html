@@ -5,6 +5,35 @@
     <title>location</title>
 </head>
 <body>
+<button onclick="success()">success</button>
+<button onclick="history.go(-1)">back</button>
 
+<script>
+    // 必须声明方法 否则无法删除此监听器
+    function state() {
+        history.pushState(null, null, document.URL);
+    }
+
+    history.pushState(null, null, document.URL);
+    // 禁用浏览器回退页面操作
+    window.addEventListener('popstate', state);
+
+    function success() {
+        // 开启浏览器回退页面操作
+        window.removeEventListener('popstate', state);
+    }
+
+    function param(key) {
+        let regExp = new RegExp('(^|&)' + key + '=([^&]*)(&|$)', 'i');
+        let result = (arguments[1] ? location.hash : location.search).substr(1).match(regExp);
+        return result == null ? null : decodeURI(result[2]);
+        // 另一种写法
+        // let matches = location.hash.match(new RegExp(key + '=([^&]*)'));
+        // return matches ? matches[1] : null;
+    }
+
+    console.log(param('name'));
+    console.log(param('age', true));
+</script>
 </body>
 </html>
