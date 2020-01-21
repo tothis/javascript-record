@@ -174,6 +174,22 @@
     });
     console.log(map3, 'map3');
 
+    /**
+     * filter回调函数参数
+     * 当前正在遍历的元素
+     * 当前元素索引
+     * 原数组本身
+     */
+    arr1.filter((item, index, self) => {
+        console.log(item);
+        console.log(index);
+        console.log(self);
+
+        if (index === 2)
+            self.splice(index, 1);
+    });
+    console.log(arr1);
+
     arr1.forEach((item, index) => {
             console.log('index : ' + index + ' item : ' + index);
             // 删除下标为var2后的一个元素 为0数组不变
@@ -182,6 +198,12 @@
     );
 
     console.log(arr1);
+
+    let arr3 = [3, 2, 1];
+    arr3.sort(function (a, b) {
+        return a - b;
+    });
+    console.log(arr3, 'arr3');
 </script>
 </body>
 </html>
