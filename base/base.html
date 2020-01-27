@@ -20,6 +20,39 @@
 
     // new Util('#test', {}).show();
 
+    /**
+     * if(变量)和if(条件)区别
+     * if(变量) 可以看作为 if (变量 == null或undefined或true)
+     * if(变量 === true或false) 会被浏览器忽略
+     * 如下打印 temp2 temp3 temp6 temp7 temp9 temp13 temp16
+     */
+    let temp; // 定义变量未初始化
+
+    if (temp) console.log('temp1');
+    if (!temp) console.log('temp2');
+
+    if (temp == null) console.log('temp3');
+    if (temp === null) console.log('temp4');
+
+    temp = 0;
+    if (temp) console.log('temp5');
+    if (!temp) console.log('temp6');
+
+    if (temp == false) console.log('temp7');
+    if (temp === false) console.log('temp8');
+
+    temp = 1;
+    if (temp == true) console.log('temp9');
+    if (temp === true) console.log('temp10');
+
+    temp = ''; // 或等于其它值
+    if (temp == true) console.log('temp11');
+    if (temp === true) console.log('temp12');
+    if (temp == false) console.log('temp13');
+    if (temp === false) console.log('temp14');
+    if (temp) console.log('temp15');
+    if (!temp) console.log('temp16');
+
     function three(var1) {
         return function (var2) {
             console.log(var2)
@@ -429,13 +462,22 @@
         console.log(value);
     }
 
+    // 重写console.log
+    // 方式1
     console.log = (function (log) {
-        return function (value) {
-            log.call(console, '%c ♥ ♡ -> %c ' + value + ' '
+        return function () {
+            log.call(console, '%c ♥ ♡ -> %c ' + Array.prototype.slice.call(arguments) + ' '
                 , 'color: #fadfa3; background: #030307; padding:5px 0;border-radius: 4px'
                 , 'background: #fadfa3; padding:5px 0;border-radius: 4px');
         }
     })(console.log);
+    // 方式2
+    let log = console.log;
+    console.log = function () {
+        log.call(console, '%c ♥ ♡ -> %c ' + Array.prototype.slice.call(arguments) + ' '
+            , 'color: #fadfa3; background: #030307; padding:5px 0;border-radius: 4px'
+            , 'background: #fadfa3; padding:5px 0;border-radius: 4px');
+    };
 
     console.log('李磊');
 

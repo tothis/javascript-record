@@ -115,11 +115,11 @@
     </div>
     <div class="btn-left" onClick='__switch(false)'><i class="fa fa-angle-left"></i></div>
     <div class="btn-right" onClick='__switch(true)'><i class="fa fa-angle-right"></i></div>
-    <div class="switch">
-        <!--        <div class="btn on">第1张</div>-->
-        <!--        <div class="btn">第2张</div>-->
-        <!--        <div class="btn">第3张</div>-->
-    </div>
+</div>
+<div class="switch">
+    <!--        <div class="btn on">第1张</div>-->
+    <!--        <div class="btn">第2张</div>-->
+    <!--        <div class="btn">第3张</div>-->
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
@@ -200,7 +200,7 @@
         __switch(true);
         interval = setInterval(() => {
             __switch(true);
-        }, time);
+        }, time / 2);
     }
 </script>
 </body>

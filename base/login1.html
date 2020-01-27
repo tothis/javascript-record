@@ -57,8 +57,9 @@
             font-size: 16px;
             position: absolute;
             left: 20%;
-            border: 0px solid #ffffff;
-            padding: 0;
+            border: 0px solid #fff;
+            border-radius: 6px;
+            padding-left: 16px;
             margin: 5px 0 0 0;
             background-color: rgba(0, 0, 0, 0);
         }
@@ -74,7 +75,7 @@
         .input.captcha {
             margin-top: 25.4%;
             width: 18%;
-            left: 28%;
+            left: 35%;
             border-color: #969696;
         }
 
@@ -121,11 +122,27 @@
             border-radius: 50%;
         }
 
-        .remember-me-text {
+        #remember-password {
+            position: absolute;
+            left: 27%;
+            margin-top: 26.6%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .remember-me {
             position: absolute;
             margin-top: 26.48%;
             color: white;
             left: 22.5%;
+        }
+
+        .remember-password {
+            position: absolute;
+            margin-top: 26.48%;
+            color: white;
+            left: 29.5%;
         }
 
         .footer {
@@ -194,6 +211,12 @@
             transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
             -webkit-transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
         }
+
+        /* 浏览器填充表单 */
+        input:-webkit-autofill {
+            -webkit-text-fill-color: white;
+            -webkit-box-shadow: 0 0 0 1000px #336271 inset;
+        }
     </style>
 </head>
 <body>
@@ -202,21 +225,24 @@
 <div class="input account">
     <i class="to to-user icon"></i>
     <div class="account-text">账号</div>
-    <input type="text" class="account-input" id="userName" placeholder="请输入账户">
+    <input class="account-input" name="userName" onblur="setPassword()" placeholder="请输入账户">
 </div>
 <div class="input password">
     <i class="to to-password icon"></i>
     <div class="account-text">密码</div>
-    <input type="password" class="account-input" id="password" placeholder="请输入密码">
+    <input type="password" class="account-input" name="password" placeholder="请输入密码">
 </div>
 <button class="login" onclick="login()">立即登录</button>
 
 <input type="checkbox" id="remember-me">
-<span class="remember-me-text">记住我</span>
+<span class="remember-me">记住我</span>
+
+<input type="checkbox" id="remember-password">
+<span class="remember-password">记住密码</span>
 
 <div class="input captcha">
     <img src="/captcha/jpg" onclick="this.src='/captcha/jpg?'+Math.random()">
-    <input id="captcha" class="account-input" style="left: 54%;" placeholder="请输入验证码">
+    <input name="captcha" class="account-input" style="left: 54%;width: 40%;" autocomplete="off" placeholder="请输入验证码">
 </div>
 
 <p class="footer">&copy;
@@ -225,21 +251,28 @@
 
 <script src="https://www.layuicdn.com/layui/layui.js"></script>
 <script>
+
+    let userName = document.querySelector('input[name=userName]');
+    let password = document.querySelector('input[name=password]');
+    let captcha = document.querySelector('input[name=captcha]');
+    let rememberMe = document.querySelector('#remember-me');
+    let rememberPassword = document.querySelector('#remember-password');
+
     layui.use(['layer'], function () {
         let layer = layui.layer,
             $ = layui.$;
         window.login = function () {
 
-            let userName = $('#userName').val();
-            let password = $('#password').val();
-            let captcha = $('#captcha').val();
+            let userNameValue = userName.value;
+            let passwordValue = password.value;
+            let captchaValue = captcha.value;
 
-            if (userName.trim() === '') {
+            if (userNameValue.trim() === '') {
                 layer.msg('用户名不能为空');
                 return;
             }
 
-            if (password.trim() === '') {
+            if (passwordValue === '') {
                 layer.msg('密码不能为空', {
                     time: 5000 // 2秒关闭(默认3秒)
                 }, function () {
@@ -247,7 +280,7 @@
                 return;
             }
 
-            if (captcha.trim() === '') {
+            if (captchaValue.trim() === '') {
                 layer.msg('验证码不能为空');
                 return;
             }
@@ -256,16 +289,17 @@
                 type: 'post',
                 async: false,
                 data: {
-                    'userName': userName
-                    , 'password': password
-                    , 'rememberMe': $('#remember-me').checked
-                    , 'captcha': captcha
+                    'userNameValue': userNameValue
+                    , 'passwordValue': passwordValue
+                    , 'rememberMe': rememberMe.checked
+                    , 'captchaValue': captchaValue
                 },
                 url: '/login',
                 success: function (data) {
                     if (data.code === 200) {
                         localStorage.clear();
                         sessionStorage.clear();
+                        clearCookie();
                         layer.msg('登录成功', {
                             time: 5000 // 5秒关闭(默认3秒)
                         }, function () {
@@ -279,11 +313,74 @@
                     }
                 }
             });
+            savePassword();
         }
     });
 
-    /** 如果login页面在iframe中自动重定向 */
-    if (window != top) {
+    // 点击登录时触发客户端事件
+    function savePassword() {
+        if (rememberPassword.checked === true) {
+            setCookie(userName.value, password.value, 14 * (24 * 60 * 60 * 1000));
+        } else {
+            // 未选中记住密码 则立即过期
+            delCookie(userName.value);
+        }
+    }
+
+    // 用户名失去焦点时调用该方法
+    function setPassword() {
+        if (userName.value !== '' && password.value === '') {
+            let passwordValue = getCookie(userName.value);
+            if (passwordValue !== '') {
+                rememberPassword.checked = true;
+                password.value = passwordValue;
+            }
+        }
+    }
+
+    function setCookie(name, value, time, path) {
+        let date = new Date();
+        date.setTime(date.getTime() + time);
+        document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + date.toGMTString() + ';path=' + (path === null ? '/' : path);
+    }
+
+    function getCookie(name) {
+        let arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return decodeURIComponent(arr[2]);
+        else
+            return null;
+    }
+
+    function delCookie(name) {
+        let date = new Date();
+        date.setTime(date.getTime() - 1);
+        let value = getCookie(name);
+        if (value !== null)
+            document.cookie = name + "=" + value + ";expires=" + date.toGMTString();
+    }
+
+    // 清除所有cookie
+    function clearCookie() {
+        let keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+        if (keys) {
+            for (let i = keys.length; i--;)
+                document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString();
+        }
+    }
+
+    /**
+     * 防止页面被嵌套iframe
+     *
+     * 1.head中设置meta属性 <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+     * DENY 不能被嵌入到任何iframe或frame中
+     * SAMEORIGIN 页面只能被同源的页面嵌入到iframe或者frame中
+     * ALLOW-FROM http://xxx.xxx.com 只能被嵌入到指定域名的框架中
+     * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options
+     *
+     * 2.如果login页面在iframe中自动重定向
+     */
+    if (window !== top) {
         top.location.href = location.href;
     }
 </script>
