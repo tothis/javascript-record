@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>top</title>
+    <title>scroll</title>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
         html, body {
@@ -54,8 +54,13 @@
     }
 
     // 窗口滚动检测
+    /**
+     * 有doctype声明页面 可使用document.documentElement.scrollTop 获取scrollTop高度
+     * 无doctype声明页面 使用document.body.scrollTop 获取scrollTop高度
+     * safari使用window.pageYOffset获取scrollTop高度
+     */
     window.onscroll = function () {
-        scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+        let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
         scroll.style.display = (scrollTop >= 300) ? 'block' : 'none';
     }
 </script>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scroll</title>
+    <style>
+        #text {
+            margin: 100vh 0 20vh;
+            display: block;
+        }
+
+        .button {
+            top: 0;
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+<div class="button">
+    <input type="button" id="btn1" value="btn1">
+    <input type="button" id="btn2" value="btn2">
+    <input type="button" id="btn3" value="btn3">
+</div>
+<input id="text" value="文本">
+<script>
+    const text = document.getElementById('text');
+
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollIntoView
+    document.getElementById('btn1').onclick = function () {
+        text.scrollIntoView(/*true*/); // 默认参数为true
+    };
+    document.getElementById('btn2').onclick = function () {
+        text.scrollIntoView(false);
+    };
+    document.getElementById('btn3').onclick = function () {
+        text.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+    };
+</script>
+</body>
+</html>
