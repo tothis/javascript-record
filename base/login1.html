@@ -329,7 +329,7 @@
 
     // 用户名失去焦点时调用该方法
     function setPassword() {
-        if (userName.value !== '' && password.value === '') {
+        if (userName.value.trim() !== '' && password.value === '') {
             let passwordValue = getCookie(userName.value);
             if (passwordValue !== '') {
                 rememberPassword.checked = true;
