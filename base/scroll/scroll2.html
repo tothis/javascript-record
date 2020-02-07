@@ -15,12 +15,16 @@
             border-radius: 20px;
         }
 
+        .content {
+            height: 100%;
+        }
+
         #scroll {
             display: none;
         }
 
         #scroll::after {
-            content: '\f004';
+            content: '\f25a';
             font-family: fontawesome;
             font-size: 50px;
             color: white;
@@ -29,15 +33,21 @@
             cursor: pointer;
             position: fixed;
         }
+
+        img {
+            /* 等同于<img src='xx'> */
+            content: url(../image/image2.png);
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
-<div>
-    <img src="image/image1.png">
-    <img src="image/image1.png">
-    <img src="image/image1.png">
-    <img src="image/image1.png">
-    <img src="image/image1.png">
+<div class="content">
+    <script>
+        for (let i = 0; i < 5; i++) {
+            document.write('<img>');
+        }
+    </script>
 </div>
 <div id="scroll"></div>
 </body>
