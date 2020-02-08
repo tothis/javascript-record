@@ -5,65 +5,77 @@
     <title>document</title>
 </head>
 <body>
+<!-- 注释 -->
+<div id="content">
+    <div id="1"></div>
+    <div id="2"></div>
+</div>
 <script>
+    let content = document.getElementById('content');
+    let one = document.getElementById('1');
+    let two = document.getElementById('2');
+
+    let childNodes = document.querySelector('body').childNodes;
     /**
-     * childNodes 获取节点 不同浏览器表现不同
-     * IE 只获取元素节点 非IE 获取元素节点与文本节点
+     * childNodes 获取元素节点和文本 注释
+     * children 获取元素节点
      */
-    for (childNode in childNodes) {
+    for (let i = 0; i < childNodes.length; i++) {
+        let nodeName = childNodes[i].nodeName;
         // 解决方案
-        if (childNode.nodeName == '#text') continue;
-        // 或者
-        if (childNode.nodeType != '3') continue;
+        if (nodeName === '#text' || nodeName === '#comment' || nodeName === 'SCRIPT') continue;
+        // 或
+        let nodeType = childNodes[i].nodeType;
+        if (nodeType === 3 || nodeType === 8) continue;
+        console.log(childNodes[i]);
     }
+
     /**
-     * children(建议使用) 获取元素节点 浏览器表现相同
-     * childrenfirstChild与firstElementChild
-     *      相同点 获取父节点下的第一个节点对象
-     *      不同点 firstchild IE6 7 8 第一个元素节点非IE6 7 8 第一个节点 文本节点或者元素节点firstElementChild IE6 7 8 不支持非IE6 7 8 第一个元素节点
+     * firstChild和firstElementChild
      */
     function firstChild(obj) {
-        if (obj.firstElementChild) return obj.firstElementChild;
-        return obj.firstChild
+        // firstChild会获取文本或注释作为节点
+        if (obj.firstElementChild
+            || obj.firstChild.nodeType === 3
+            || obj.firstChild.nodeType === 8)
+            return obj.firstElementChild;
+        return obj.firstChild;
     }
+
+    console.log(firstChild(content), 'firstChildFun');
+    console.log(content.firstElementChild, 'firstElementChild');
+    console.log(content.firstChild, 'firstChild');
 
     /**
      * lastChild与lastElementChild
-     * 相同点 获取父节点下的最后一个节点对象
-     * 不同点 lastchild IE6 7 8 最后一个元素节点
-     * 非IE6 7 8 最后一个节点 文本节点或者元素节点
-     * lastElementChild IE6 7 8 不支持
-     * 非IE6 7 8 最后一个元素节点
      */
+    console.log(content.lastChild, 'lastChild');
+    console.log(content.lastElementChild, 'lastElementChild');
 
     /**
-     * nextSibling与nextElementChild
-     * 相同点 获取后一个兄弟节点对象
-     * 不同点 nextSibling IE6 7 8 后一个兄弟元素节点
-     * 非IE6 7 8 后一个兄弟节点 文本节点或者元素节点
-     * lastElementChild IE6 7 8 不支持
-     * 非IE6 7 8 后一个兄弟元素节点
+     * nextSibling与nextElementSibling 下一个兄弟元素节点
      */
+    console.log(one.nextSibling, 'nextSibling');
+    console.log(one.nextElementSibling, 'nextElementSibling');
 
     /**
-     * previousSibling与previousElementChild
-     * 相同点 获取前一个兄弟节点对象
-     * 不同点 previousSibling IE6 7 8 前一个兄弟元素节点
-     * 非IE6 7 8 前一个兄弟节点 文本节点或者元素节点
+     * previousSibling与previousElementSibling 前一个兄弟元素节点
      */
+    console.log(two.previousSibling, 'previousSibling');
+    console.log(two.previousElementSibling, 'previousElementSibling');
 
     /**
-     * previousElementChild IE6 7 8 不支持
-     * 非IE6 7 8 前一个兄弟元素节点
      * parentNode 获取父元素 不存在兼容性问题
      * offsetParent 获取第一个设置定位的父元素
      * offsetLeft 获取离第一个定位父元素的左距离
      * offsetTop 获取离第一个定位父元素的上距离
      */
+    console.log(two.offsetParent, 'offsetParent');
+
     // 只获取第一个匹配元素 结果为单个dom对象
     document.querySelector('input[type=password]');
     // 获取所有的匹配元素 结果为数组
-    document.querySelectorAll('input[type=password]');
+    document.querySelectorAll('input[type=text]');
 
     // test为不存在的class 返回值为空数组
     console.log(document.getElementsByClassName('test') === null); // false
@@ -71,10 +83,10 @@
     // test为不存在的id 返回值为null
     console.log(document.getElementById('test') === null); // true
     console.log(document.querySelector('#test') === null); // true
-    // 直接报错
-    console.log(document.querySelector('#test').getAttribute('name') === null);
-    // test为存在的id name为不存在的属性
-    console.log(document.querySelector('#test').getAttribute('name') === null); // true
+
+    // content为存在的id name为不存在的属性
+    console.log(document.getElementById('content').getAttribute('name') === null); // true
+    console.log(document.querySelector('#content').getAttribute('name') === null); // true
 </script>
 </body>
 </html>
