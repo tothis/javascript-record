@@ -87,6 +87,9 @@
     // content为存在的id name为不存在的属性
     console.log(document.getElementById('content').getAttribute('name') === null); // true
     console.log(document.querySelector('#content').getAttribute('name') === null); // true
+
+    console.log(document.getElementById('1'));
+    console.log(document.querySelector('#1')); // querySelector无法获取数字类型id
 </script>
 </body>
 </html>
