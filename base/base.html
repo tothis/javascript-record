@@ -472,23 +472,21 @@
         }
     })(console.log);
     // 方式2
-    let log = console.log;
-    console.log = function () {
-        log.call(console, '%c ♥ ♡ -> %c ' + Array.prototype.slice.call(arguments) + ' '
-            , 'color: #fadfa3; background: #030307; padding:5px 0;border-radius: 4px'
-            , 'background: #fadfa3; padding:5px 0;border-radius: 4px');
-    };
+    // let _log = console.log;
+    // console.log = function () {
+    //     _log.call(console, '%c ♥ ♡ -> %c ' + Array.prototype.slice.call(arguments) + ' '
+    //         , 'color: #fadfa3; background: #030307; padding:5px 0;border-radius: 4px'
+    //         , 'background: #fadfa3; padding:5px 0;border-radius: 4px');
+    // };
 
     console.log('李磊');
 
     alert('lilei');
     window.alert('lilei');
 
-    var log = function (value) {
-        alert(value);
-    };
+    var log = console.log;
 
-    log('李磊');
+    log('李', '磊');
 </script>
 </body>
 </html>
