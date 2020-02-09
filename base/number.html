@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>number</title>
 </head>
 <body>
@@ -26,101 +26,49 @@
         write(.005.toFixed(2), '舍去为0.01'); // 0.01
         write(.015.toFixed(2), '进一为0.02'); // 0.01
 
-        write(toFixed1(.005, 2), '舍去为0.01'); // 0.01
-        write(toFixed1(.015, 2), '进一为0.02'); // 0.02
-
-        write(toFixed2(.005, 2), '舍去为0.01'); // 0.01
-        write(toFixed2(.015, 2), '进一为0.02'); // 0.02
+        write(toFixed(.005, 2), '舍去为0.01'); // 0.01
+        write(toFixed(.015, 2), '进一为0.02'); // 0.02
 
         write();
         write('补零测试');
 
         write(.1.toFixed(2)); // 0.10
-        write(toFixed1(.1, 2)); // 0.10
-        write(toFixed2(.1, 2)); // 0.10
+        write(toFixed(.1, 2)); // 0.10
 
-        write(-.1.toFixed(2)); // 原生toFixed => -0.1
-        write(toFixed1(-.1, 2)); // 0.10
-        write(toFixed2(-.1, 2)); // 0.10
+        write(-.1.toFixed(2)); // -0.1
+        write(toFixed(-.1, 2)); // 0.10
     }
 
     const write = function () {
         document.write(Array.prototype.slice.call(arguments).join('&nbsp') + '<br>');
     }
 
-    function toFixed1(number, repeat) {
+    function toFixed(value, repeat) {
+        if (isEmpty(value)) throw '无法处理空值';
         let count = Math.pow(10, repeat);
-        let roundNum = Math.round(number * count) / count;
-        return roundNum.toFixed(repeat);
+        // parseFloat('-.1') => -0.1
+        return zeroFill(Math.round(parseFloat(value) * count) / count, repeat);
     }
 
-    // num为传入的值 n为保留的小数位
-    function toFixed2(num, length) {
-        num = parseFloat(num);
-        if (isNaN(num)) return false;
-
-        // 设置浮点数要扩大的倍数
-        let multiple = Math.pow(10, length);
-
-        num = Math.round(num * multiple) / multiple; // length次幂
-        let str = num.toString();
-        let dot = str.indexOf('.');
-        // 判定如果是整数 增加小数点再补0
-        if (dot === -1) {
-            str += '.';
-            dot = str.length;
-        }
-        while (str.length <= dot + length) {
-            str += '0';
-        }
-        return str;
-    }
-
-    /**
-     * 找到舍入位并判断该位置数字是否大于等于5 条件成立手动进一位
-     */
-    Number.prototype.toFixed = function (length) {
-        // 设置浮点数要扩大的倍数
-        let multiple = Math.pow(10, length);
-        // 存放进位标志
-        let number = 0;
-        // 将调用该方法的数字转为字符串
-        let str = this + '';
-        // 找到小数点的位置
-        let dot = str.indexOf('.');
-        // 找到要进行舍入的数的位置 手动判断是否大于等于5 满足条件进位标志置为1
-        if (str.substr(dot + length + 1, 1) >= 5) number = 1;
-
-        // 去掉舍入位后的所有数 然后加上我们的手动进位数
-        let num = Math.floor(this * multiple) + number;
-        // 将进位后的整数再缩小为原浮点数
-        let result = num / multiple + '';
-        /*
-         * 处理进位后无小数
-         */
-        dot = result.indexOf('.');
-
-        // 判定如果是整数 增加小数点再补0
-        // if (dot === -1) {
-        //     result += '.';
-        //     dot = 1;
-        // }
-        // let len = result.length - (dot + 1);
-        // if (len < length) {
-        //     for (let i = 0; i < length - len; i++) {
-        //         result += 0;
-        //     }
-        // }
-
+    function zeroFill(result, repeat) {
+        if (isEmpty(repeat) || repeat === 0) return result;
+        result = result.toString();
+        if (result.indexOf('0') !== 0 && result.indexOf('-0') !== 0) repeat--;
+        let dot = result.indexOf('.');
         // 判定如果是整数 增加小数点再补0
         if (dot === -1) {
             result += '.';
             dot = result.length;
         }
-        while (result.length <= dot + length) {
+        while (result.length <= dot + repeat) {
             result += '0';
         }
         return result;
+    }
+
+    function isEmpty(value) {
+        return (typeof (value) === 'undefined' || value === null)
+            || (typeof (value) === 'string' && value.trim().length === 0);
     }
 </script>
 </body>

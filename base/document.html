@@ -88,6 +88,21 @@
     console.log(document.getElementById('content').getAttribute('name') === null); // true
     console.log(document.querySelector('#content').getAttribute('name') === null); // true
 
+    /**
+     * 普通自定义属性只可以通过getAttribute获取值
+     * html5自定义'data-'前缀属性还可以通过dataset获取值
+     */
+    // <p user="lilei"></p>
+    document.getElementById('test').getAttribute('user');
+    document.getElementById('test').setAttribute('user', 'lei');
+    // <p data-test="lilei"></p>
+    document.getElementById('test').dataset.test;
+    document.getElementById('test').dataset.test == 'lei';
+    // <p data-user-name="lilei"></p>
+    // data-多个单词组成的属性 获取时使用驼峰风格
+    document.getElementById('test').dataset.userName;
+    document.getElementById('test').dataset.userName = 'lei';
+
     console.log(document.getElementById('1'));
     console.log(document.querySelector('#1')); // querySelector无法获取数字类型id
 </script>

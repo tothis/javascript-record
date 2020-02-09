@@ -67,21 +67,6 @@
     // 包几层就可传几次参数
     console.log(three('one')('two')('three'));
 
-    /**
-     * 普通自定义属性只可以通过getAttribute获取值
-     * html5自定义'data-'前缀属性还可以通过dataset获取值
-     */
-    // <p user="lilei"></p>
-    document.getElementById('test').getAttribute('user');
-    document.getElementById('test').setAttribute('user', 'lei');
-    // <p data-test="lilei"></p>
-    document.getElementById('test').dataset.test;
-    document.getElementById('test').dataset.test == 'lei';
-    // <p data-user-name="lilei"></p>
-    // data-多个单词组成的属性 获取时使用驼峰风格
-    document.getElementById('test').dataset.userName;
-    document.getElementById('test').dataset.userName = 'lei';
-
     // typeof使用 typeof返回值为字符串类型
     console.log(typeof x); // undefined
     console.log(typeof (true)); // boolean
@@ -487,6 +472,25 @@
     var log = console.log;
 
     log('李', '磊');
+
+    // 即使使用const数组 数组依然可以被修改 使用freeze可以冰冻对象
+    const arr = [1, 2, 3];
+    // 有些浏览器不兼容freeze函数
+    if (Object.freeze) Object.freeze(arr);
+    // arr.push(4);
+    console.log(arr);
+
+    // caller和callee区别
+    function a1() {
+        // a1.caller必须写在al中 caller只在函数执行时有效
+        console.log(a1.caller.name, 'caller');
+        console.log(arguments.callee.name, 'callee');
+    }
+
+    // 此时如下结果皆为 a1函数中的a1.caller为b1函数 arguments.callee为a1函数
+    function b1() {a1()}b1();
+    function c1() {b1()}c1();
+    function d1() {c1()}d1();
 </script>
 </body>
 </html>
