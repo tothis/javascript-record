@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>showSpeed</title>
     <style>
         img {
@@ -23,17 +24,17 @@
         let fileSize = 345;
         let end = new Date();
         let speed = Math.round(fileSize * 1000 / (end - begin));
-        document.getElementById('show').innerHTML = ('ÍøËÙ => ' + speed * 8 + ' (K/Ãë)');
+        document.getElementById('show').innerHTML = ('ç½‘é€Ÿ => ' + speed * 8 + 'k');
     }
 
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'hidden') {
-            document.title = 'Àë¿ª';
+            document.title = 'ç¦»å¼€';
         }
         if (document.visibilityState === 'visible') {
-            document.title = '»ØÀ´';
+            document.title = 'å›æ¥';
         }
-        // document.title = document.hidden ? 'Àë¿ª' : '»ØÀ´';
+        // document.title = document.hidden ? 'hide' : 'show';
     });
 </script>
 </body>
