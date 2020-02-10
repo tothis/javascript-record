@@ -5,6 +5,7 @@
     <title>zodiac</title>
     <style>
         img {
+            display: inline-block;
             width: 300px;
             height: 300px;
             object-fit: cover;
@@ -12,9 +13,43 @@
             animation: rotate 30s infinite ease-in-out;
         }
 
+        rotate {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            /* vertical-align在display为inline或inline-block时生效 默认baseline 即标签内文本和标签底端对齐 */
+            vertical-align: top;
+            border-radius: 50%;
+            color: grey;
+            background-color: black;
+            border: 6px solid #e8582e;
+            border-top: 6px solid #61eaab;
+            -webkit-animation: load .8s infinite linear;
+            animation: load .8s infinite linear;
+        }
+
+        rotate::after {
+            content: 'rotate';
+            position: relative;
+            font-size: 80px;
+            top: 96px;
+        }
+
         @keyframes rotate {
             100% {
                 transform: rotate(7200deg);
+            }
+        }
+
+        @-webkit-keyframes load {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
             }
         }
 
@@ -41,6 +76,7 @@
     </button>
 </form>
 <img src="image/image2.png">
+<rotate></rotate>
 <script>
 
     let zodiac1 = document.getElementById('zodiac1');
