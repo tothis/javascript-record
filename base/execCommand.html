@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>execCommand</title>
+</head>
+<body>
+<input id="text1" value="文本">
+
+<button onclick="copy()">Copy</button>
+<button onclick="paste()">paste</button>
+
+<textarea id="text2" rows="10" cols="50"></textarea>
+
+<hr>
+<!-- <iframe id="content" style="border: none;width: 100%"></iframe> -->
+<div id="content">
+    <script>
+        for (let i = 0; i < 5; i++) {
+            document.write('文本文本文本文本文本文本文本文本文本文本<br>');
+        }
+    </script>
+</div>
+<hr>
+
+<input type="button" value="创建链接" onclick="createLink()">
+<input type="button" value="改变文字背景色" onclick="changeBackColor()">
+<input type="button" value="改变文字前景色" onclick="changeForeColor()">
+<input type="button" value="给文字加线条" onclick="changeSelection()">
+<input type="button" value="改变文字排列" onclick="format()">
+<input type="button" value="保存文件" onclick="save()">
+<input type="button" value="打印文件" onclick="print()">
+
+<script>
+    const text1 = document.getElementById('text1');
+    const text2 = document.getElementById('text2');
+
+    const content = document.getElementById('content');
+    // chrome firefox和safari只能针对可编辑页面执行execCommand方法
+    // ie9和opera可针对不可编辑页面执行execCommand方法
+    document.designMode = 'on'; // 文档可编辑
+
+    // const iframe = document.getElementById('content').contentDocument;
+    // // const iframe = window.frames ['content'];
+    // iframe.designMode = 'on'; // 文档可编辑
+    // for (let i = 0; i < 5; i++) {
+    //     iframe.write('文本文本文本文本文本文本文本文本文本文本<br>');
+    // }
+
+    function copy() {
+        text1.select();
+        console.log(document.execCommand('copy'), 'copy');
+
+        navigator.clipboard.readText().then(text => {
+            navigator.clipboard.writeText(text + '李磊')
+                .then(() => {
+                    console.log('复制成功');
+                });
+        });
+    }
+
+    function paste() {
+        text2.focus();
+        // chrome不支持execCommand('paste')粘贴
+        // console.log(document.execCommand('paste'), 'paste');
+        navigator.clipboard.readText().then(text => {
+            console.log('剪贴板内容 => ', text);
+            text2.value += text;
+        }).catch(err => {
+            console.error('读取剪贴板内容失败', err);
+        });
+    }
+
+    window.addEventListener('keydown', function () {
+        if (event.keyCode == 16) {
+            // 按下shift按钮 执行命令
+            document.execCommand('bold');
+        }
+    });
+
+    function createLink() {
+        // 第一个参数不区分大小写
+        document.execCommand('createLink', false, 'http://baidu.com');
+    }
+
+    function changeBackColor() {
+        document.execCommand('backColor', false, '#FFbbDD');
+    }
+
+    function changeForeColor() {
+        // 指定前景色
+        document.execCommand('foreColor', false, '#bbddcc');
+        // 指定背景色
+        document.execCommand('fontSize', false, '3');
+        // 字体必须是系统支持的字体
+        document.execCommand('fontName', false, '标楷体');
+        // 字体变粗
+        document.execCommand('bold');
+        // 变斜体
+        document.execCommand('italic');
+    }
+
+    function changeSelection() {
+        // 将选中的文字加下划线
+        document.execCommand('underline');
+        // 在选中的文字上划粗线
+        document.execCommand('strikeThrough');
+        // 将选中的部分文字变细
+        document.execCommand('superScript');
+        // 将选中区块的下划线取消掉
+        document.execCommand('underline');
+    }
+
+    function format() {
+        // 有序列排列
+        document.execCommand('insertOrderedList');
+        // 实心无序列排列
+        document.execCommand('insertUnorderedList');
+        // 空心无序列排列
+        document.execCommand('indent');
+    }
+
+    function save() {
+        // 第二个参数为欲保存的文件名
+        document.execCommand('saveAs', 'html.txt');
+    }
+
+    function print() {
+        // 打印整个页面
+        document.execCommand('print');
+    }
+</script>
+</body>
+</html>

@@ -5,11 +5,16 @@
     <title>location</title>
 </head>
 <body>
-<button onclick="success()">success</button>
-<button onclick="history.go(-1)">back</button>
+<a>location</a>
+<!-- <button onclick="success()">success</button> -->
+<button onclick="history.back()">back</button>
+<button onclick="history.go(-1)">go(-1)</button>
+<button onclick="history.forward()">forward</button>
+<button onclick="history.go(1)">go(1)</button>
+<p id="show"></p>
 
 <script>
-    // 必须声明方法 否则无法删除此监听器
+    /*// 必须声明方法 否则无法删除此监听器
     function state() {
         history.pushState(null, null, document.URL);
     }
@@ -17,23 +22,67 @@
     history.pushState(null, null, document.URL);
     // 禁用浏览器回退页面操作
     window.addEventListener('popstate', state);
+    // 使用history.forward()和history.go(1)也可禁用回退 但快速点击浏览器返回按钮会失效
 
     function success() {
         // 开启浏览器回退页面操作
         window.removeEventListener('popstate', state);
-    }
+    }*/
 
     function param(key) {
         let regExp = new RegExp('(^|&)' + key + '=([^&]*)(&|$)', 'i');
         let result = (arguments[1] ? location.hash : location.search).substr(1).match(regExp);
-        return result == null ? null : decodeURI(result[2]);
+        return result ? decodeURI(result[2]) : null;
         // 另一种写法
-        // let matches = location.hash.match(new RegExp(key + '=([^&]*)'));
-        // return matches ? matches[1] : null;
+        // let result = location.hash.match(new RegExp(key + '=([^&]*)'));
+        // return result ? decodeURI(result[1]) : null;
     }
 
-    console.log(param('name'));
-    console.log(param('age', true));
+    console.log(param('name')); // 获取url'?'后参数
+    console.log(param('age', true)); // 获取url'#'后参数
+
+    for (let i = 0; i < 5; i++) {
+        let button = document.createElement('button');
+        button.innerText = '加载' + (i + 1);
+        button.onclick = eval('load' + (i + 1));
+        document.body.appendChild(button);
+    }
+
+    const href = location.protocol + '//' + location.host + location.pathname + '?' + Math.random();
+
+    function load1() {
+        history.go(0);
+    }
+
+    function load2() {
+        location.reload();
+    }
+
+    function load3() {
+        location.replace(href);
+    }
+
+    function load4() {
+        location.assign(href);
+    }
+
+    function load5() {
+        // location = location;
+        location.href = href;
+    }
+
+    document.querySelector('a').href = href;
+
+    const show = document.getElementById('show');
+    let flag = sessionStorage.getItem('flag');
+    if (flag) {
+        flag = Number(flag) + 1;
+        show.innerText = '已刷新 => ' + flag;
+        sessionStorage.setItem('flag', flag.toString());
+    } else {
+        show.innerText = '未刷新';
+        sessionStorage.setItem('flag', '0');
+    }
 </script>
 </body>
 </html>

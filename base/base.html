@@ -25,6 +25,18 @@
      * if(变量) 可以看作为 if (变量 == null或undefined或true)
      * if(变量 === true或false) 会被浏览器忽略
      * 如下打印 temp2 temp3 temp6 temp7 temp9 temp13 temp16
+     *
+     * 根据js这种特性如下三种表达式皆等同于三元表达式
+     * let flag=null
+     *
+     * flag==null?1:null => 1
+     * !flag==null?1:null => null
+     *
+     * flag?null:1 => 1
+     * !flag?null:1 => null
+     *
+     * flag||1 => 1
+     * !flag||1 => true
      */
     let temp; // 定义变量未初始化
 
@@ -488,9 +500,23 @@
     }
 
     // 此时如下结果皆为 a1函数中的a1.caller为b1函数 arguments.callee为a1函数
-    function b1() {a1()}b1();
-    function c1() {b1()}c1();
-    function d1() {c1()}d1();
+    function b1() {
+        a1()
+    }
+
+    b1();
+
+    function c1() {
+        b1()
+    }
+
+    c1();
+
+    function d1() {
+        c1()
+    }
+
+    d1();
 </script>
 </body>
 </html>
