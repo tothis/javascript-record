@@ -36,8 +36,14 @@
             margin-top: 3%;
             left: 20%;
             font-size: 30px;
-            color: white;
+            color: transparent;
             font-weight: bold;
+            background-image: url(../image/cool2.gif);
+            background-size: cover;
+            -webkit-background-clip: text;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
 
         .input {
@@ -77,6 +83,11 @@
             width: 18%;
             left: 35%;
             border-color: #969696;
+        }
+
+        .captcha > .account-input {
+            left: 54%;
+            width: 40%;
         }
 
         .captcha > img {
@@ -242,7 +253,7 @@
 
 <div class="input captcha">
     <img src="/captcha/jpg" onclick="this.src='/captcha/jpg?'+Math.random()">
-    <input name="captcha" class="account-input" style="left: 54%;width: 40%;" autocomplete="off" placeholder="请输入验证码">
+    <input name="captcha" class="account-input" autocomplete="off" placeholder="请输入验证码">
 </div>
 
 <p class="footer">&copy;

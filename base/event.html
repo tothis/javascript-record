@@ -24,6 +24,15 @@
             color: black;
             background-color: white;
         }
+
+        #ul {
+            list-style: khmer;
+            font-size: 24px;
+        }
+
+        #ul::after {
+            content: 'ul的文本';
+        }
     </style>
 </head>
 <body>
@@ -36,7 +45,6 @@
     </div>
     one
 </div>
-
 
 <button id="btn1" onclick="btn1()">btn1</button>
 <button id="btn2">btn2</button>
@@ -64,6 +72,11 @@
         console.log('btn2');
     }
 
+    // 移除事件绑定 赋值空函数或null
+    // document.getElementById('btn2').onclick = function () {
+    // }
+    // document.getElementById('btn2').onclick = null;
+
     /**
      * js事件监听 ie8以下不支持
      * element.addEventListener(event, function, useCapture)
@@ -71,13 +84,15 @@
      * element.removeEventListener('click', function, useCapture);
      * 同一个监听事件可分别为事件捕获和事件冒泡注册 两次事件需要分别移除
      */
-    document.getElementById('btn3').addEventListener('click', (e) => {
-        console.log('btn3');
-        if (1 === 1) {
-            // 删除匿名方法
-            this.removeEventListener(e.type, arguments.callee, false);
+    document.getElementById('btn3').addEventListener('click'
+        , function (e) { // 此处使用'()=>{}'函数下面无法获取arguments
+            console.log('btn3');
+            if (1 === 1) {
+                // 删除匿名方法
+                this.removeEventListener(e.type, arguments.callee, false);
+            }
         }
-    });
+    );
 
     ///// ///// ///// ///// /////
 
@@ -85,23 +100,28 @@
     let ul = document.getElementById('ul');
 
     /**
-     * 事件委托 利用冒泡原理 把事件加到父元素或祖先元素上 触发执行
+     * 事件委托 利用事件冒泡 子孙的事件被委托到父元素上触发执行
      * 提高性能 每个函数都会占用内存 使用一个事件委托函数代理可代理所有事件
      * 动态监听 添加的子元素具有相同事件
      * @type {HTMLElement}
      */
     ul.onmouseover = function (event) {
+        // event在ie中为全局变量 在firefox中需使用参数引导使用
         event = event || window.event;
+        console.log(event.target, 'target');
+        console.log(event.srcElement, 'srcElement');
+        console.log(event.currentTarget, 'currentTarget');
+        // ie支持srcElement firefox支持target
         let target = event.target || event.srcElement;
-        if (target.nodeName.toLowerCase() == 'li') {
-            target.style.background = '#ff0000';
+        if (target.nodeName === 'LI' || target.nodeName === 'UL') {
+            target.style.backgroundColor = '#ff0000';
         }
     };
     ul.onmouseout = function (event) {
         event = event || window.event;
         let target = event.target || event.srcElement;
-        if (target.nodeName.toLowerCase() == 'li') {
-            target.style.background = '#fff';
+        if (target.nodeName === 'LI' || target.nodeName === 'UL') {
+            target.style.backgroundColor = '#fff';
         }
     };
 
@@ -112,17 +132,42 @@
         ul.appendChild(li);
     };
 
+    /**
+     * 元素属性事件和on事件同时存在时 on事件会覆盖元素属性事件
+     * 首先执行元素属性事件 on事件和addEventListener按代码顺序执行
+     */
     ///// ///// ///// ///// /////
 
-    function $(element) {
-        return document.getElementById(element);
+    // 阻止冒泡行为
+    function stopBubble(e) {
+        // 如事件对象存在 则当前为非ie浏览器
+        if (e && e.stopPropagation)
+            e.stopPropagation();
+        else
+        // ie中阻止冒泡行为方式
+            window.event.cancelBubble = true;
     }
 
-    function on(element, eventName, handler, useCapture) {
+    // 阻止浏览器默认行为
+    function stopDefault(e) {
+        // 非ie中阻止默认行为方式
+        if (e && e.preventDefault)
+            e.preventDefault();
+        // ie中阻止默认行为方式
+        else
+            window.event.returnValue = false;
+        return false;
+    }
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function on(id, eventName, handler, useCapture) {
         if (addEventListener) {
-            $(element).addEventListener(eventName, handler, useCapture);
+            $(id).addEventListener(eventName, handler, useCapture);
         } else {
-            $(element).attachEvent('on' + eventName, handler);
+            $(id).attachEvent('on' + eventName, handler);
         }
     }
 
