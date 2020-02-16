@@ -99,19 +99,6 @@
         }
     }
 
-    /**
-     * 获取元素左边的距离
-     */
-    function getElementLeft(ele) {
-        let parent = ele.offsetParent;
-        let left = ele.offsetLeft;
-        while (parent !== null) {
-            left += parent.offsetLeft;
-            parent = parent.offsetParent;
-        }
-        return left;
-    }
-
     function getStyle(obj, attr) {
         if (obj.currentStyle) {
             // 兼容ie

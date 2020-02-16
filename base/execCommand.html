@@ -7,14 +7,15 @@
 <body>
 <input id="text1" value="文本">
 
-<button onclick="copy()">Copy</button>
+<button onclick="copy()">copy</button>
 <button onclick="paste()">paste</button>
 
 <textarea id="text2" rows="10" cols="50"></textarea>
 
 <hr>
 <!-- <iframe id="content" style="border: none;width: 100%"></iframe> -->
-<div id="content">
+<!-- contenteditable="true"文档可编辑 -->
+<div id="content" contenteditable="true">
     <script>
         for (let i = 0; i < 5; i++) {
             document.write('文本文本文本文本文本文本文本文本文本文本<br>');
@@ -22,15 +23,24 @@
     </script>
 </div>
 <hr>
-
-<input type="button" value="创建链接" onclick="createLink()">
-<input type="button" value="改变文字背景色" onclick="changeBackColor()">
-<input type="button" value="改变文字前景色" onclick="changeForeColor()">
-<input type="button" value="给文字加线条" onclick="changeSelection()">
-<input type="button" value="改变文字排列" onclick="format()">
-<input type="button" value="保存文件" onclick="save()">
-<input type="button" value="打印文件" onclick="print()">
-
+<button data-name="bold">文字变粗</button>
+<button data-name="italic">文字变斜</button>
+<button data-name="strikethrough">文字删除线</button>
+<button data-name="underline">文字下滑线</button>
+<button data-name="superscript">文字变细</button>
+<button data-name="fontsize" data-value="4">文字大小设为4</button>
+<button data-name="backcolor" data-value="gray">改变背景颜色</button>
+<button data-name="foreColor" data-value="pink">改变文字颜色</button>
+<button data-name="insertparagraph">插入p</button>
+<button data-name="insertorderedlist">插入ol</button>
+<button data-name="insertunorderedlist">插入ul</button>
+<button data-name="createlink" data-value="http://baidu.com">插入链接</button>
+<button data-name="unlink">删除链接</button>
+<button data-name="insertimage" data-value="./image/cool2.gif">插入图像</button>
+<button data-name="print">打印页面</button>
+<input type="button" value="显示内容"
+       onclick="this.nextElementSibling.value = document.getElementById('content').innerText">
+<textarea></textarea>
 <script>
     const text1 = document.getElementById('text1');
     const text2 = document.getElementById('text2');
@@ -38,7 +48,7 @@
     const content = document.getElementById('content');
     // chrome firefox和safari只能针对可编辑页面执行execCommand方法
     // ie9和opera可针对不可编辑页面执行execCommand方法
-    document.designMode = 'on'; // 文档可编辑
+    // document.designMode = 'on'; // 文档可编辑
 
     // const iframe = document.getElementById('content').contentDocument;
     // // const iframe = window.frames ['content'];
@@ -47,6 +57,20 @@
     //     iframe.write('文本文本文本文本文本文本文本文本文本文本<br>');
     // }
 
+    let btns = document.getElementsByTagName('button');
+    for (let i = 0; i < btns.length; i++) {
+        if (btns[i].getAttribute('data-name') !== null)
+            btns[i].onclick = function () {
+                document.execCommand(this.dataset.name, false, this.dataset.value);
+            }
+    }
+
+    /**
+     * document.execCommand函数3个参数
+     * 1. 命令名称 必填
+     * 2. 是否展示用户界面 默认false
+     * 3. 额外参数 默认为null
+     */
     function copy() {
         text1.select();
         console.log(document.execCommand('copy'), 'copy');
@@ -71,64 +95,40 @@
         });
     }
 
-    window.addEventListener('keydown', function () {
-        if (event.keyCode == 16) {
-            // 按下shift按钮 执行命令
+    document.onkeydown = function () {
+        event = event || window.event;
+        let keyCode = event.keyCode || event.which || event.charCode;
+        if (event.ctrlKey && keyCode === 66) {
             document.execCommand('bold');
         }
+    }
+
+    // 粘贴图片
+    content.addEventListener('paste', function (e) {
+        let clipboardData = e.clipboardData;
+        if (clipboardData) {
+            let items = clipboardData.items;
+            if (items.length === 0) {
+                return;
+            }
+            let types = clipboardData.types;
+            for (let i = 0; i < types.length; i++) {
+                if (types[i] === 'Files') {
+                    let item = items[i];
+                    if (item.kind === 'file' && item.type.match(/^image\//i)) {
+                        let reader = new FileReader();
+                        reader.onloadend = function (e) {
+                            let image = document.createElement('img');
+                            image.src = e.target.result;
+                            image.cssText = 'max-width:60%;max-height:250px;';
+                            content.appendChild(image)
+                        };
+                        reader.readAsDataURL(item.getAsFile());
+                    }
+                }
+            }
+        }
     });
-
-    function createLink() {
-        // 第一个参数不区分大小写
-        document.execCommand('createLink', false, 'http://baidu.com');
-    }
-
-    function changeBackColor() {
-        document.execCommand('backColor', false, '#FFbbDD');
-    }
-
-    function changeForeColor() {
-        // 指定前景色
-        document.execCommand('foreColor', false, '#bbddcc');
-        // 指定背景色
-        document.execCommand('fontSize', false, '3');
-        // 字体必须是系统支持的字体
-        document.execCommand('fontName', false, '标楷体');
-        // 字体变粗
-        document.execCommand('bold');
-        // 变斜体
-        document.execCommand('italic');
-    }
-
-    function changeSelection() {
-        // 将选中的文字加下划线
-        document.execCommand('underline');
-        // 在选中的文字上划粗线
-        document.execCommand('strikeThrough');
-        // 将选中的部分文字变细
-        document.execCommand('superScript');
-        // 将选中区块的下划线取消掉
-        document.execCommand('underline');
-    }
-
-    function format() {
-        // 有序列排列
-        document.execCommand('insertOrderedList');
-        // 实心无序列排列
-        document.execCommand('insertUnorderedList');
-        // 空心无序列排列
-        document.execCommand('indent');
-    }
-
-    function save() {
-        // 第二个参数为欲保存的文件名
-        document.execCommand('saveAs', 'html.txt');
-    }
-
-    function print() {
-        // 打印整个页面
-        document.execCommand('print');
-    }
 </script>
 </body>
 </html>

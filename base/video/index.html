@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>video</title>
-    <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet">
+    <title>video.js</title>
+    <!-- <link href="//vjs.zencdn.net/7.6.6/video-js.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.bootcss.com/video.js/7.6.6/video-js.min.css" rel="stylesheet">
     <style>
         .vjs-poster {
             width: 100%;
@@ -19,11 +20,12 @@
     </style>
 </head>
 <body>
-<video id='video' class="video-js">
+<video id="video" class="video-js">
     <!-- hls直播源地址 CCTV1高清 -->
     <source src="http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8">
 </video>
-<script src="//vjs.zencdn.net/7.6.6/video.min.js"></script>
+<!-- <script src="//vjs.zencdn.net/7.6.6/video.min.js"></script> -->
+<script src="https://cdn.bootcss.com/video.js/7.6.6/video.min.js"></script>
 <script>
     const player = videojs('video', {
         controls: true, // 是否显示控制栏
