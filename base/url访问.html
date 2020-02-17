@@ -135,7 +135,8 @@
         interval = setInterval(function () {
             document.getElementById('show').src = url;
             index++;
-            console.log('第' + index + '次执行 -> ' + time * 1000)
+            console.log('第' + index + '次执行 -> ' + time * 1000);
+            // textContent可以获取display为none的元素的文本内容 innerText则不可以
             document.getElementById('text').innerText = '已访问' + index + '次';
         }, time * 1000);
     }
