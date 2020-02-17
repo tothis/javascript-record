@@ -15,29 +15,29 @@ let wss = [],
     index = 1;
 
 // 有socket连入
-ws.on('connection', function (ws) {
+ws.on('connection', function (currentWs) {
 
     // 将socket存入数组
-    wss.push(ws);
+    wss.push(currentWs);
 
     // 保存socket数组中下标 当前程序只允许2个socket 第一个为0 第二个为1
     // otherIndex就反着来 第一个socket的otherIndex下标为1 第二个socket的otherIndex下标为0
-    let otherIndex = index--,
+    let currentWsIndex = index--,
         desc = null;
-    console.log(otherIndex);
+    console.log(currentWsIndex);
 
-    if (otherIndex === 1) {
-        desc = '第' + otherIndex + '个socket';
+    if (currentWsIndex === 1) {
+        desc = '第' + currentWsIndex + '个socket';
     } else {
-        desc = '第' + otherIndex + '个socket';
+        desc = '第' + currentWsIndex + '个socket';
     }
 
     // 转发收到的消息
-    ws.on('message', function (message) {
+    currentWs.on('message', function (message) {
         let json = JSON.parse(message);
         console.log('received (' + desc + ') : ', json);
 
-        wss[otherIndex].send(message, function (error) {
+        wss[currentWsIndex].send(message, function (error) {
             if (error) {
                 console.log('send message error (' + desc + ') : ', error);
             }
