@@ -29,7 +29,66 @@
     // Util.prototype.show = show;
     // 构造器提供静态方法
     // Util.prototype.constructor.show = show;
-
     // console.log('构造器', Util.prototype.constructor === Util); // true
+
+    // 阻止冒泡行为
+    Util.stopBubble = stopBubble;
+    // 阻止浏览器默认行为
+    Util.stopDefault = stopDefault;
+    // 增加监听事件
+    Util.addEvent = addEvent;
+    // 删除监听事件
+    Util.removeEvent = removeEvent;
+    // class是否存在
+    Util.hasClass = hasClass;
+
+    // 阻止冒泡行为
+    function stopBubble(e) {
+        // 如事件对象存在 则当前为非ie浏览器
+        if (e && e.stopPropagation)
+            e.stopPropagation();
+        else
+        // ie中阻止冒泡行为方式
+            window.event.cancelBubble = true;
+    }
+
+    // 阻止浏览器默认行为
+    function stopDefault(e) {
+        // 非ie中阻止默认行为方式
+        if (e && e.preventDefault)
+            e.preventDefault();
+        // ie中阻止默认行为方式
+        else
+            window.event.returnValue = false;
+        return false;
+    }
+
+    // 添加监听事件
+    function addEvent(ele, event, fun) {
+        if (window.attachEvent) {
+            ele.attachEvent('on' + event, fun)
+        } else if (window.addEventListener) {
+            ele.addEventListener(event, fun, false);
+        } else {
+            ele['on' + event] = fun;
+        }
+    }
+
+    // 删除监听事件
+    function removeEvent(ele, event, fun) {
+        if (window.detachEvent) {
+            ele.detachEvent('on' + event, fun);
+        } else if (window.removeEventListener) {
+            ele.removeEventListener(event, fun, false);
+        } else {
+            ele['on' + event] = null;
+        }
+    }
+
+    // class是否存在
+    function hasClass(ele, className) {
+        return new RegExp('(^|\\s)' + className + '(\\s|$)').test(ele.className)
+    }
+
     return Util;
 });
