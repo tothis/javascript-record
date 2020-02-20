@@ -1,55 +1,35 @@
-// 前面加;防止跟其他js压缩时报错
-;(function (global) {
+// umd规范 前面加;防止跟其他js压缩时报错
+;(function (global, factory) {
+    if (typeof exports === 'object' && typeof module !== 'undefined') { // 检查CommonJS是否可用
+        module.exports = factory();
+    } else if (typeof define === 'function' && define.amd) { // 检查AMD是否可用
+        define(factory)
+    } else { // 两种都不能用 把模块添加到JavaScript的全局命名空间中
+        global = global || self, global.Util = factory();
+    }
+})(this, function () { // 此处的this为window对象
     // 开启严格模式
     'use strict';
+
+    function show(selector) {
+        document.querySelector(selector).style.display = 'block';
+    }
 
     // 构造函数定义一个类
-    function Util(selector, options) {
-        this.element = document.querySelector(selector);
-        // this.show = Util.show;
-    };
-    // 原型上提供方法
-    Util.prototype = {
-
-        // construct: Util,
-        //定义方法
-        show: function () {
-            console.log(this.element);
-            this.element.style.display = 'block';
-        }
+    function Util() {
+        // 提供实例方法
+        this.show = show;
+        console.log('Util');
     };
 
-    if (typeof module !== 'undefined' && module.exports) { // 兼容CommonJs规范
-        module.exports = Util;
-    } else if (typeof define === 'function') { // 兼容AMD/CMD规范
-        define(function () {
-            return Util;
-        });
-    } else { // 注册全局变量 兼容直接使用script标签引入插件
-        // 等同于window.Util = Util
-        global.Util = Util;
-    }
-})(this); // 此处的this为window对象
+    // 提供静态方法
+    Util.show = show;
 
-// 变量方法 不用new
-(function (global) {
-    // 开启严格模式
-    'use strict';
+    // 原型上提供实例方法
+    // Util.prototype.show = show;
+    // 构造器提供静态方法
+    // Util.prototype.constructor.show = show;
 
-    let util = {
-        show: function (selector) {
-            this.element = document.querySelector(selector).style.display = 'block';
-        }
-    };
-
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = util;
-    } else if (typeof define === 'function') {
-        define(function () {
-            return util;
-        });
-    } else {
-        // 等同于window.Util = Util
-        global.util = util;
-    }
-})(this);
+    // console.log('构造器', Util.prototype.constructor === Util); // true
+    return Util;
+});

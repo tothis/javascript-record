@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>loop</title>
 </head>
 <body>
@@ -26,7 +26,7 @@
      因此 使用这两个循环时 必须将continue放到i++之后使用 否则 continue将跳过i++进入死循环
      */
 
-    // while循环
+        // while循环
     let var1 = 0;
     while (var1 < 10) {
         document.write(var1 + '<br>'); // 0 1 2 3 4 5 6 7 8 9
@@ -151,10 +151,31 @@
     // 将一个数组添加到另一个数组的尾部
     let arr1 = [0, 1, 2];
     let arr2 = [3, 4, 5];
+    // arr1.push(arr2);
+    // console.log(arr1, 'arr1'); // [0, 1, 2, Array(3)] "arr1"
+    console.log(arr1.concat(arr2), 'arr1'); // [0, 1, 2, 3, 4, 5] "arr1"
+
     // es5写法
     // Array.prototype.push.apply(arr1, arr2);
     // es6写法
     arr1.push(...arr2);
+
+    // 使用document获取的数组为htmlCollection htmlCollection为只读数组 htmlCollection和数组交互
+    let htmlCollection = document.getElementsByTagName('br');
+    console.log(htmlCollection, 'htmlCollection');
+
+    // 把htmlCollection转为array
+    console.log(Array.prototype.slice.call(htmlCollection), 'transform1');
+    console.log([].slice.call(htmlCollection), 'transform2');
+    console.log([...htmlCollection], 'transform3');
+
+    // 把htmlCollection转为array 并添加到数组
+    let htmlArray = [];
+    Array.prototype.push.apply(htmlArray, htmlCollection);
+    console.log(htmlArray, 'htmlCollection push1'); // array
+    htmlArray = [];
+    htmlArray.push(...htmlCollection);
+    console.log(htmlArray, 'htmlCollection push2'); // array
 
     const map1 = arr1.map(x => x * 2);
     console.log(arr1);

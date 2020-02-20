@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>event</title>
     <style>
         #one {
@@ -84,7 +84,8 @@
      * element.removeEventListener('click', function, useCapture);
      * 同一个监听事件可分别为事件捕获和事件冒泡注册 两次事件需要分别移除
      */
-    document.getElementById('btn3').addEventListener('click'
+    const btn3 = document.getElementById('btn3');
+    btn3.addEventListener('click'
         , function (e) { // 此处使用'()=>{}'函数下面无法获取arguments
             console.log('btn3');
             if (1 === 1) {
@@ -201,6 +202,10 @@
     function three2() {
         console.log('three冒泡');
     }
+
+    // 查看元素已有事件 chrome控制台调试可用 写在页面中会报错
+    // 结果中点击 事件名 => listener => [[FuntionLocation]] -> 函数
+    getEventListeners(document.getElementById('btn3'))
 </script>
 </body>
 </html>

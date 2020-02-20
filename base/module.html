@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>module</title>
 </head>
 <body>
+<h1 id="test1" style="display: none">静态方法</h1>
+<h1 id="test2" style="display: none">实例方法</h1>
+<script src="./js/util.js"></script>
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
+<script>
+    Util.show('#test1');
+    new Util().show('#test2');
 
+    var module1 = new Object({
+        count: 0,
+        fun1: function () {
+            //...
+        },
+        fun2: function () {
+            //...
+        }
+    });
+    console.log(module1.count);
+    // 会暴露所有模块成员 内部状态可以被外部改写
+    module1.count = 1;
+    console.log(module1.count);
+
+    // 使用匿名函数可用return选择暴露的成员
+    var module2 = (function () {
+        let count = 0;
+        let fun1 = function () {
+            //...
+        };
+        let fun2 = function () {
+            //...
+        };
+        return {
+            fun1: fun1,
+            fun2: fun2
+        };
+    })();
+    console.info(module2.count); // undefined
+
+    // 一个模块可分成多个部分 或者一个模块继承另一个模块 可采用放大模式augmentation
+
+    var module2 = (function (module) {
+        module.fun3 = function () {
+            //...
+        };
+        return module;
+    })(module2);
+    // 上面代码作用为为module1模块添加了一个新方法fun3() 并返回新的module1对象
+
+    // 模块各个部分从网络请求获取时 无法得知哪个部分先加载
+    // 第一个执行部分可能加载一个不存在空对象 此时要采用宽放大模式 Loose augmentation
+    var module2 = (function (module) {
+        module.fun3 = function () {
+            //...
+        };
+        return module;
+    })(window.module1 || {});
+</script>
 <script>
     /**
      * commonjs为nodejs后端模块开发指定的cmd规范
@@ -26,11 +82,13 @@
      * AMD依赖前置 js可以方便知道依赖模块是谁 立即加载 而CMD就近依赖 需要使用把模块变为字符串解析一遍才
      * 知道依赖了那些模块 牺牲性能来带来开发便利 实际上解析模块用的时间短到可以忽略
      */
-    // commonjs 使用全局方法require()加载模块
+
+    /* commonjs */
+    // 加载模块
     var math = require('math');
     math.add(2, 3); // 5
 
-    // commonjs模块定义 module.exports
+    // 定义模块
     var x = 5;
     var addX = function (value) {
         return value + x;
@@ -38,77 +96,50 @@
     module.exports.x = x;
     module.exports.addX = addX;
 
-    // 模块引用 require
-    var example = require('./example.js');
-
-    console.log(example.x); // 5
-    console.log(example.addX(1)); // 6
-
-    // 与AMD规范的兼容性
-    define(function (require, exports, module) {
-        var moduleA = require("moduleA");
-        var moduleB = require("moduleB");
-
-        moduleA.one();
-        moduleB.two();
-
-        exports.asplode = function () {
-            moduleA.one();
-            moduleB.two();
-        };
+    /* requirejs */
+    /**
+     * 加载模块
+     *
+     * 依赖项(非必填)
+     * 回调函数(必填)
+     */
+    require(['math'], function (math) {
+        math.addX(2);
     });
 
-    // requirejs 定义模块 define
-    define(function () {
+    /**
+     * 定义模块
+     *
+     * moduleName(非必填) 模块名称 默认模块名为请求脚本名
+     * 依赖项(非必填)
+     * 回调函数(必填)
+     */
+    define('moduleName', ['math'], function (math) {
         return {
-            method1: function () {
-            },
-            method2: function () {
-            },
-        };
-    });
-    // 多模块定义
-    define(['module1', 'module2'], function (m1, m2) {
-        // module1 module2 依赖的模块 m1,m2 分别对应module1 与 module2
-        return {
-            method: function () {
-                m1.methodA();
-                m2.methodB();
+            addX: function (x) {
+                math.add(2 + x);
             }
         };
     });
-    // 模块引用 require
-    require(['one', 'two'], function (one, two) {
-        one.doSomething();
-    });
 
-    // ES6 moduel 模块定义 export
-    // 导出变量
-    export var var1 = 1;
-    export let var2 = '2';
-    export const var3 = "3";
+    /* es6 */
+    // 加载模块
+    import {one, two} from './example.js';
 
-    // 导出函数
+    // 定义模块
+    export let var1 = 0;
+    export const var2 = [1, 2, 3];
+
     export function add(num1, num2) {
         return num1 + num2;
     }
 
-    // 导出类
     export class Test {
         constructor(length, width) {
             this.length = length;
             this.width = width;
         }
     }
-
-    function testMethod(num1, num2) {
-        return num1 * num2;
-    }
-
-    // 导出对象 即导出引用
-    export {testMethod}
-    // 模块引用 import
-    import {identifier1, identifier2} from "./example.js"
 </script>
 </body>
 </html>

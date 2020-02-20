@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>object</title>
 </head>
 <body>
@@ -86,7 +86,7 @@
 
     // for in遍历对象
     for (let attr in obj) {
-        if (typeof obj[attr] != 'function') {
+        if (typeof obj[attr] !== 'function') {
             console.log('属性操作 ' + obj[attr]);
         }
     }
@@ -101,7 +101,7 @@
         console.log('name : ' + arr[i].name + ', age : ' + arr[i].age);
     }
 
-    console.log('----------')
+    console.log('----------');
 
     /**
      * call apply bind
@@ -146,7 +146,6 @@
     console.log(out.call(this)); // name1
     console.log(out.call(obj3)); // name2
 
-    // 实现继承
     // 父类
     function Person(name, age) {
         this.out = function () {
@@ -154,25 +153,40 @@
         }
     }
 
-    // 子类
+    /**
+     * 通过call或apply实现继承
+     */
     function Chinese(name, age, address) {
         Person.call(this, name, age);
+        // Person.apply(this, [name, age]);
         this.address = address;
         // this.out = function () {
         //     return '中国';
         // }
     }
 
-    // 子类
+    /**
+     * 通过原型实现继承
+     */
     function American(name, age, address) {
-        Person.apply(this, [name, age]);
         this.address = address;
     }
+    American.prototype = new Person();
+
+    // 设置原型的构造器 仅可用于识别对象是由哪个构造函数初始化 仅此而已
+    American.prototype.constructor = American;
 
     let chinese = new Chinese('李磊', 18, '上海');
     console.log(chinese.out());
+    // 原型继承缺点 无法往父类构造函数中传参
     let american = new American('frank', 20, '华盛顿');
     console.log(american.out());
+    console.log(american.constructor === Person, 'Person');
+    console.log(american.constructor === American, 'American');
+    // 实例对象可以继承原型对象的属性
+    let test = new Person();
+    console.log(test.constructor === Person); // true
+    console.log(test.__proto__ === Person.prototype); // true
 </script>
 </body>
 </html>

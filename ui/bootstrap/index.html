@@ -14,6 +14,11 @@
             border-top: 80px solid #ff6b6b;
             border-radius: 4px;
         }
+
+        .custom-control-label {
+            /* bootstrap单选多选框往右偏移 */
+            margin-left: 1.6rem;
+        }
     </style>
 </head>
 <body>
@@ -38,11 +43,16 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">number</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" step="0.01">
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-sm-2 col-form-label">file</label>
             <div class="col-sm-10">
                 <input type="file">
             </div>
-            <small class="form-text text-muted">文件上传</small>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">select</label>
@@ -67,22 +77,48 @@
                 </select>
             </div>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">select</label>
+            <div class="col-sm-10">
+                <!-- readonly对select不生效 使用disabled可以解决但select数据无法被提交 -->
+                <select name="select" class="form-control" disabled>
+                    <option>1</option>
+                    <option>2</option>
+                    <option selected>3</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">select</label>
+            <div class="col-sm-10">
+                <!-- select只读 提交表单不被忽略 readonly使样式与disabled产生效果一致 -->
+                <select name="select" class="form-control" readonly onmousedown="return false">
+                    <option>1</option>
+                    <option>2</option>
+                    <option selected>3</option>
+                </select>
+            </div>
+        </div>
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">选框</label>
             <div class="col-sm-10">
                 <div class="row">
-                    <div class="col offset-md-1 custom-checkbox">
-                        <input id="check" name="checkbox" type="checkbox" class="custom-control-input" id="check">
+                    <div class="col custom-checkbox">
+                        <input type="checkbox" id="check" name="checkbox" class="custom-control-input">
                         <label class="custom-control-label" for="check">check</label>
                     </div>
-                    <div class="col">
-                        <input name="radio" checked type="radio" value="one">one
+                    <div class="col custom-radio">
+                        <input type="radio" id="oneRadio" name="radio" value="one" class="custom-control-input">
+                        <label class="custom-control-label" for="oneRadio">radio</label>
+                    </div>
+                    <div class="col custom-radio">
+                        <input type="radio" id="twoRadio" name="radio" value="two" class="custom-control-input">
+                        <label class="custom-control-label" for="twoRadio">radio</label>
                     </div>
                     <div class="col">
-                        <input name="radio" type="radio" value="two">two
+                        <span id="radio-show">one</span>
                     </div>
-                    <small id="radio-show" class="form-text text-muted">one</small>
                     <div class="col">
                         <input name="range" type="range" class="form-control-range" id="range">
                     </div>
@@ -90,8 +126,8 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-primary" onclick="console.log($(this.parentNode).serialize())"
-                data-toggle="tooltip" title="点击提交">
+        <button type="button" class="btn btn-primary"
+                onclick="console.log($(this.parentNode).serialize())">
             提交
         </button>
     </form>
@@ -163,7 +199,7 @@
         radios[i].addEventListener('change', () => {
             for (let i = 0; i < radios.length; i++) {
                 if (radios[i].checked) {
-                    document.getElementById('radio-show').innerText = radios[i].value;
+                    document.getElementById('radio-show').textContent = radios[i].value;
                 }
             }
         });

@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>document</title>
 </head>
 <body>
 <!-- 注释 -->
 <div id="content">
-    <div id="1"></div>
-    <div id="2"></div>
+    <div id="1">
+        <i>test</i>one
+    </div>
+    <script>var test = 'test';</script>
+    <div id="2">
+        <i></i>two
+    </div>
 </div>
+<p id="test" user="lilei"></p>
 <script>
     let content = document.getElementById('content');
     let one = document.getElementById('1');
@@ -92,7 +98,6 @@
      * 普通自定义属性只可以通过getAttribute获取值
      * html5自定义'data-'前缀属性还可以通过dataset获取值
      */
-    // <p user="lilei"></p>
     document.getElementById('test').getAttribute('user');
     document.getElementById('test').setAttribute('user', 'lei');
     // <p data-test="lilei"></p>
@@ -104,7 +109,15 @@
     document.getElementById('test').dataset.userName = 'lei';
 
     console.log(document.getElementById('1'));
-    console.log(document.querySelector('#1')); // querySelector无法获取数字类型id
+    // console.log(document.querySelector('#1')); // querySelector无法获取数字类型id
+
+    console.log(content.innerText, 'innerText');
+    /**
+     * innerText操作会引起浏览器回流
+     * textContent在特定情况下 如所赋值内容超出了容器尺寸 才会触发回流
+     * textContent会识别script标签中内容 会把空标签解析成换行 几个空标签就是几行
+     */
+    console.log(content.textContent, 'textContent');
 </script>
 </body>
 </html>
