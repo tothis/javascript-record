@@ -64,24 +64,24 @@
     }
 
     // 添加监听事件
-    function addEvent(ele, event, fun) {
-        if (window.attachEvent) {
-            ele.attachEvent('on' + event, fun)
-        } else if (window.addEventListener) {
-            ele.addEventListener(event, fun, false);
+    function addEvent(ele, type, fun) {
+        if (window.addEventListener) {
+            ele.addEventListener(type, fun, false);
+        } else if (window.attachEvent) {
+            ele.attachEvent('on' + type, fun)
         } else {
-            ele['on' + event] = fun;
+            ele['on' + type] = fun;
         }
     }
 
     // 删除监听事件
-    function removeEvent(ele, event, fun) {
-        if (window.detachEvent) {
-            ele.detachEvent('on' + event, fun);
-        } else if (window.removeEventListener) {
-            ele.removeEventListener(event, fun, false);
+    function removeEvent(ele, type, fun) {
+        if (window.removeEventListener) {
+            ele.removeEventListener(type, fun, false);
+        } else if (window.detachEvent) {
+            ele.detachEvent('on' + type, fun);
         } else {
-            ele['on' + event] = null;
+            ele['on' + type] = null;
         }
     }
 

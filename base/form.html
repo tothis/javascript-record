@@ -104,36 +104,17 @@
 
     // 调用方法
     function serializeForm(formEle) {
-        // 获取指定form中的所有的input select textarea对象
-        let _elements = elements(formEle);
-
-        let outElements = document.querySelectorAll('*[form=' + formEle.id + ']');
-        _elements.push(...outElements);
-
-        console.log(_elements);
+        // form中所有表单元素
+        let elements = formEle.elements;
 
         let result = new Array();
-        for (let i = 0; i < _elements.length; i++) {
-            let queryComponent = serializeElement(_elements[i]);
+        for (let i = 0; i < elements.length; i++) {
+            let queryComponent = serializeElement(elements[i]);
             if (queryComponent) {
                 result.push(queryComponent);
             }
         }
         return result.join('&');
-    }
-
-    function elements(element) {
-        let array = new Array();
-        let _elements = element.children;
-        if (_elements.length === 0) {
-            return null;
-        } else {
-            for (let i = 0; i < _elements.length; i++) {
-                array.push(_elements[i]);
-                Array.prototype.push.apply(array, elements(_elements[i]));
-            }
-            return array;
-        }
     }
 
     let events = new Array();
