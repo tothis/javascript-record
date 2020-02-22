@@ -26,32 +26,38 @@
         write(.005.toFixed(2), '舍去为0.01'); // 0.01
         write(.015.toFixed(2), '进一为0.02'); // 0.01
 
-        write(toFixed(.005, 2), '舍去为0.01'); // 0.01
-        write(toFixed(.015, 2), '进一为0.02'); // 0.02
+        write(toFixed1(.005, 2), '舍去为0.01'); // 0.01
+        write(toFixed1(.015, 2), '进一为0.02'); // 0.02
+
+        write(toFixed2(.005, 2), '舍去为0.01'); // 0.01
+        write(toFixed2(.015, 2), '进一为0.02'); // 0.02
 
         write();
         write('补零测试');
 
         write(.1.toFixed(2)); // 0.10
-        write(toFixed(.1, 2)); // 0.10
+        write(toFixed1(.1, 2)); // 0.10
+        write(toFixed2(.1, 2)); // 0.10
 
         write(-.1.toFixed(2)); // -0.1
-        write(toFixed(-.1, 2)); // 0.10
+        write(toFixed1(-.1, 2)); // 0.10
+        write(toFixed2(-.1, 2)); // 0.10
     }
 
     const write = function () {
         document.write(Array.prototype.slice.call(arguments).join('&nbsp') + '<br>');
     }
 
-    function toFixed(value, repeat) {
-        if (isEmpty(value)) throw '无法处理空值';
+    function toFixed1(number, repeat) {
         let count = Math.pow(10, repeat);
-        // parseFloat('-.1') => -0.1
-        return zeroFill(Math.round(parseFloat(value) * count) / count, repeat);
+        let roundNum = Math.round(number * count) / count;
+        return roundNum.toFixed(repeat);
     }
 
-    function zeroFill(result, repeat) {
-        if (isEmpty(repeat) || repeat === 0) return result;
+    function toFixed2(value, repeat) {
+        let count = Math.pow(10, repeat);
+        // parseFloat('-.1') => -0.1
+        let result = Math.round(value * count) / count;
         result = result.toString();
         if (result.indexOf('0') !== 0 && result.indexOf('-0') !== 0) repeat--;
         let dot = result.indexOf('.');
@@ -64,11 +70,6 @@
             result += '0';
         }
         return result;
-    }
-
-    function isEmpty(value) {
-        return (typeof (value) === 'undefined' || value === null)
-            || (typeof (value) === 'string' && value.trim().length === 0);
     }
 </script>
 </body>

@@ -84,6 +84,13 @@
     for (let a of arr) {
         console.log(a); // a b c d
     }
+
+    // 使用Object.keys循环对象 可以获取索引
+    let keys = Object.keys(user);
+    for (let i = 0; i < keys.length; i++) {
+        console.log(keys[i], user[keys[i]]);
+    }
+
     /**
      * for in循环读取键名 for of循环读取键值
      * 如要通过for of循环 获取数组的索引 可使用数组entries方法和keys方法

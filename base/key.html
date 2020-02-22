@@ -50,23 +50,29 @@
     <div id="block"></div>
 </div>
 <script>
-    let block = document.getElementById('block');
-
     /**
-     * keydown 按键按下
-     * keypress 按键按下抬起
-     * keyup 按键抬起
+     * keydown 按下按键 按下执行 按下期间一直执行
+     * keypress 按下按键并抬起 抬起时执行 执行一次
+     * keyup 按键抬起 抬起时执行 执行一次
      *
      * 执行顺序 onkeydown onkeypress onkeyup
      *
-     * onkeypress与onkeydown区别
-     * onkeypress 无法识别系统按钮 如 箭头键 功能键 alt ctrl shift esc等等
-     * onkeydown 捕获的keyCode不区分字母大小 而onkeypress区分
-     * @param event
+     * keypress 无法识别系统按钮 如 箭头键 功能键 alt ctrl shift esc等等
      */
+    // document.addEventListener('keydown', function () {
+    //     console.log('onkeydown');
+    // });
+    // document.addEventListener('keypress', function () {
+    //     console.log('onkeypress');
+    // });
+    // document.addEventListener('keyup', function () {
+    //     console.log('onkeyup');
+    // });
+
+    let block = document.getElementById('block');
     document.onkeydown = function (event) { // 键盘按下事件
-        let e = event || window.event || arguments.callee.caller.arguments[0];
-        switch (e.keyCode) {
+        event = event || window.event;
+        switch (event.keyCode) {
             case 37: // 左
                 block.style.left = Math.max(0, block.offsetLeft - 5) + 'px';
                 break;
@@ -83,37 +89,25 @@
     }
 
     document.onmousedown = function (event) {
-        let e = event || window.event || arguments.callee.caller.arguments[0];
-        if (e.button == 0) {
+        event = event || window.event;
+        if (event.button == 0) {
             console.log("鼠标左键");
-        } else if (e.button == 2) {
+        } else if (event.button == 2) {
             console.log("鼠标右键");
-        } else if (e.button == 1) {
+        } else if (event.button == 1) {
             console.log("鼠标滚轮");
         }
     }
 
     document.onkeypress = function (event) { // 键盘按下并抬起事件
-        let e = event || window.event || arguments.callee.caller.arguments[0];
-        switch (e.keyCode) {
+        event = event || window.event;
+        switch (event.keyCode) {
             case 37: // 左
                 console.log('左');
                 break;
             case 39:  // 右
                 console.log('右');
                 break;
-        }
-    }
-
-    document.onkeypress = function (event) { // 键盘按下并抬起事件
-        let e = event || window.event || arguments.callee.caller.arguments[0];
-        let href = location.href;
-        if (e.keyCode == 37) {
-            href.substring(0, href.length - 1) + (Number(href.substring(href.length - 1)) - 1);
-            location.href = href;
-        } else if (e.keyCode == 39) {
-            href.substring(0, href.length - 1) + (Number(href.substring(href.length - 1)) + 1);
-            location.href = href;
         }
     }
 
@@ -158,10 +152,32 @@
         // span.innerText = document.defaultView.getComputedStyle(p,'after').getPropertyValue('content');
         // span.innerText = document.defaultView.getComputedStyle(p,':after').getPropertyValue('content');
         // span.innerText = document.defaultView.getComputedStyle(p,'::after').getPropertyValue('content');
-        span.setAttribute('data', document.defaultView.getComputedStyle(p,'::after').getPropertyValue('content'));
+        span.setAttribute('data', document.defaultView.getComputedStyle(p, '::after').getPropertyValue('content'));
     }
 
     changeAffter("p::after{content:'后缀';}");
+
+    // document.onkeydown = function (event) {
+    //     event = event || window.event;
+    //
+    //     if (event.ctrlKey && event.keyCode == 83) {
+    //         console.log("ctrlKey s");
+    //         return false;
+    //     }
+    //
+    //     // f12
+    //     if (event.keyCode == 123) {
+    //         return false;
+    //     }
+    // }
+    // 禁止鼠标右键功能
+    // document.oncontextmenu = function () {
+    //     return false;
+    // }
+    // 禁止copy功能
+    // document.oncopy = function () {
+    //     return false;
+    // }
 </script>
 </body>
 </html>

@@ -41,6 +41,10 @@
     Util.removeEvent = removeEvent;
     // class是否存在
     Util.hasClass = hasClass;
+    // 使用form表单提交数据
+    Util.formSubmit = formSubmit;
+    // 数字保留小数
+    Util.toFixed = toFixed;
 
     // 阻止冒泡行为
     function stopBubble(e) {
@@ -88,6 +92,40 @@
     // class是否存在
     function hasClass(ele, className) {
         return new RegExp('(^|\\s)' + className + '(\\s|$)').test(ele.className)
+    }
+
+    /**
+     * 使用form表单提交数据
+     * @param attrs
+     * @param data
+     * @param method
+     */
+    function formSubmit(attrs, data) {
+        if (attrs && attrs.action) {
+            let form = document.createElement('form');
+            let attrKeys = Object.keys(attrs);
+            for (let i = 0; i < attrKeys.length; i++) {
+                form[attrKeys[i]] = attrs[attrKeys[i]];
+            }
+            if (data) {
+                let keys = Object.keys(data);
+                for (let i = 0; i < keys.length; i++) {
+                    let input = document.createElement('input');
+                    input.name = keys[i];
+                    input.value = data[keys[i]];
+                    form.appendChild(input);
+                }
+            }
+            document.body.appendChild(form).submit();
+            form.remove();
+        }
+    }
+
+    // 数字保留小数
+    function toFixed(number, repeat) {
+        let count = Math.pow(10, repeat);
+        let roundNum = Math.round(number * count) / count;
+        return roundNum.toFixed(repeat);
     }
 
     return Util;
