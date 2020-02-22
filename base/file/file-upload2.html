@@ -102,12 +102,9 @@ Ogg Ogg文件使用Theora视频编解码器和Vorbis音频编解码器 (iTouch�
 
         document.getElementById('image').src = canvas.toDataURL('image/png');
 
-        console.log(canvas);
-
         if (flag) {
             flag = !flag;
-            // 43失败 44成功
-            setTimeout(captureImage, 44);
+            setTimeout(captureImage, 500);
         }
     }
 
@@ -157,14 +154,14 @@ Ogg Ogg文件使用Theora视频编解码器和Vorbis音频编解码器 (iTouch�
             formData.append('fileIndex', fileIndex); // 当前文件下标
 
             $.ajax({
-                url: 'http://localhost:8080/file-upload/video',
+                url: 'http://localhost:8080/file-upload/split',
                 type: 'post',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     // 渲染进度条 如已上传完成则合并文件
-                    mergeFile(data, filename);
+                    fileMerge(data, filename);
                 }
             });
             start = end;
@@ -177,7 +174,7 @@ Ogg Ogg文件使用Theora视频编解码器和Vorbis音频编解码器 (iTouch�
      * @param data
      * @param filename
      */
-    function mergeFile(data, filename) {
+    function fileMerge(data, filename) {
         tempsFile += data.tempFile + ',';
         indexNumberNew++;
         // 上传视频进度条
@@ -191,7 +188,7 @@ Ogg Ogg文件使用Theora视频编解码器和Vorbis音频编解码器 (iTouch�
             formData.append('originalFileName', filename); // 文件名称
 
             $.ajax({
-                url: 'http://localhost:8080/merge-file',
+                url: 'http://localhost:8080/file-upload/merge',
                 type: 'post',
                 data: formData,
                 processData: false,
