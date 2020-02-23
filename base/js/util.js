@@ -125,6 +125,7 @@
     function toFixed(number, repeat) {
         let count = Math.pow(10, repeat);
         let roundNum = Math.round(number * count) / count;
+        // 此处toFixed作用 把数字变为字符串并补0
         return roundNum.toFixed(repeat);
     }
 

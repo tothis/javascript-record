@@ -21,18 +21,13 @@
         write(.0051.toFixed(2), '进一为0.01'); // 0.01
         write();
 
-        // chrome firefox safari opera结果 五前为奇皆未进1 反而ie11可以进1
+        // chrome firefox safari opera结果为四舍五入 反而银行家舍入规则正常
+        // 参考java银行家舍入 https://gitee.com/tothis/java-record/blob/master/src/main/java/com/example/base/BigDecimalBase.java
         // 可能是计算机二进制环境浮点数计算精度缺失
-        write(.005.toFixed(2), '舍去为0.01'); // 0.01
+        write(.085.toFixed(2), '舍去为0.08'); // 0.09
         write(.015.toFixed(2), '进一为0.02'); // 0.01
-
-        write(toFixed1(.005, 2), '舍去为0.01'); // 0.01
-        write(toFixed1(.015, 2), '进一为0.02'); // 0.02
-
-        write(toFixed2(.005, 2), '舍去为0.01'); // 0.01
-        write(toFixed2(.015, 2), '进一为0.02'); // 0.02
-
         write();
+
         write('补零测试');
 
         write(.1.toFixed(2)); // 0.10
@@ -48,16 +43,19 @@
         document.write(Array.prototype.slice.call(arguments).join('&nbsp') + '<br>');
     }
 
+    // 四舍五入并补0
     function toFixed1(number, repeat) {
         let count = Math.pow(10, repeat);
-        let roundNum = Math.round(number * count) / count;
-        return roundNum.toFixed(repeat);
+        number = Math.round(number * count) / count;
+        // 此处toFixed作用 把数字变为字符串并补0
+        return number.toFixed(repeat);
     }
 
+    // 四舍五入并补0
     function toFixed2(value, repeat) {
         let count = Math.pow(10, repeat);
-        // parseFloat('-.1') => -0.1
         let result = Math.round(value * count) / count;
+        // 把数字变为字符串并补0
         result = result.toString();
         if (result.indexOf('0') !== 0 && result.indexOf('-0') !== 0) repeat--;
         let dot = result.indexOf('.');
@@ -70,6 +68,23 @@
             result += '0';
         }
         return result;
+    }
+
+    // 加法
+    Number.prototype.add = function (value) {
+        return (this + value).toFixed(2);
+    }
+    // 减法
+    Number.prototype.subtract = function (value) {
+        return (this - value).toFixed(2);
+    }
+    // 乘法
+    Number.prototype.multiply = function (value) {
+        return (this * value).toFixed(2);
+    }
+    // 除法
+    Number.prototype.divide = function (value) {
+        return (this / value).toFixed(2);
     }
 </script>
 </body>
