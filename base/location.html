@@ -41,7 +41,7 @@
     console.log(param('name')); // 获取url'?'后参数
     console.log(param('age', true)); // 获取url'#'后参数
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         let button = document.createElement('button');
         button.innerText = '加载' + (i + 1);
         button.onclick = eval('load' + (i + 1));
@@ -70,6 +70,34 @@
         // location = location;
         location.href = href;
     }
+
+    function load6() {
+        // 增加history地址记录 onpopstate事件可以获取state值
+        let state = 'content';
+        history.pushState(state, null, 'load/url');
+        // 替换history当前地址记录
+        // history.replaceState(state, null, 'load/url');
+    }
+
+    (function (history) {
+        let pushState = history.pushState;
+        history.pushState = function () {
+            // 执行pushState时 打印state对象
+            console.log(arguments[0], 'pushState');
+            return pushState.apply(history, arguments);
+        };
+    })(window.history);
+
+    /**
+     * 触发popstate事件条件
+     *
+     * 用户点击浏览器后退或前进
+     * 调用histroy.back() history.forward()
+     * 调用history.go()且值不为0
+     */
+    window.addEventListener('popstate', function (event) {
+        console.log(event.state, 'popstate');
+    });
 
     document.querySelector('a').href = href;
 
