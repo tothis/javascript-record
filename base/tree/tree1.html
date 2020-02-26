@@ -4,131 +4,130 @@
     <meta charset="utf-8">
     <title>树形多选</title>
     <style>
-        <!-- todo 待优化 -->
-        ul > li {
+        #tree-content, #tree-content ul {
             list-style: none;
         }
 
-        /* 可展开 */
+        /* 展开 */
         .switch-open {
             margin-left: -12px;
             border: 6px solid transparent;
             display: inline-block;
-            width: 0px;
-            height: 0px;
+            vertical-align: text-bottom;
             border-top-color: black;
-
         }
 
-        /* 展开完毕 */
+        /* 关闭 */
         .switch-close {
             margin-left: -12px;
             border: 6px solid transparent;
             display: inline-block;
-            width: 0px;
-            height: 0px;
             border-left-color: black;
-            margin-bottom: 2px;
-
+            vertical-align: middle;
         }
 
-        /* 改变checkBox样式 */
+        input, button {
+            outline: none;
+        }
+
         input[type=checkbox] {
+            /* 去除浏览器默认样式 */
+            -webkit-appearance: none;
+            border: none;
+            background-color: gold;
+            border-radius: 4px;
+        }
+
+        /* 选中前 */
+        input[type=checkbox]::after {
+            content: 'L';
+            display: block;
             width: 20px;
             height: 20px;
-
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            border: 1px solid #c9c9c9;
-            border-radius: 3px;
-            outline: none;
-            color: white;
-            text-align: center;
-        }
-
-        input[type=checkbox]:before {
-            content: '√ ';
             color: transparent;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 16px;
+            line-height: 14px;
+            padding: 2px 0 0 2px;
+            transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
+            -webkit-transform: matrix(-0.766044, -0.642788, -0.642788, 0.766044, 0, 0);
         }
 
-        input[type=checkbox]:checked {
-            background-color: #30add6;
-        }
-
-        input[type=checkbox]:checked:before {
-            content: '√';
+        /* checkbox选中后 */
+        input[type=checkbox]:checked::after {
             color: white;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<div class="warp">
-    <ul id="container"></ul>
-</div>
+<ul id="tree-content"></ul>
 <script>
     // 结构
-    let json = {
-        '0-0': {
-            '0-0-0': null,
-            '0-0-1': {
-                '0-0-1-0': null,
-                '0-0-1-1': null,
-                '0-0-1-2': null
+    let data = {
+        '0': {
+            '0-0': null,
+            '0-1': {
+                '0-1-0': null,
+                '0-1-1': null,
+                '0-1-2': null
             },
-            '0-0-2': null
+            '0-2': null
         },
-        '0-1': {
-            '0-1-0': null,
-            '0-1-1': null
+        '1': {
+            '1-0': null,
+            '1-1': null
         },
-        '0-2': null
+        '2': null
     };
 
-    // 生成DOM
-    function generate(json, par) {
-        for (let attr in json) {
-            let ele = document.createElement('li');
-            if (!json[attr])
-                ele.innerHTML = ' <input type="checkbox"></input>' + attr;
+    // 生成树形选择框
+    function tree(data, content) {
+        for (let attr in data) {
+            let li = document.createElement('li');
+            if (!data[attr])
+                li.innerHTML = '<input type="checkbox">' + attr;
             else {
-                ele.innerHTML = '<span><span class="switch-open" onclick="toggle(this)"></span><input type="checkbox" οnclick="checkChange(this)"></input>' + attr + '</span>';
-                let nextpar = document.createElement('ul');
-                ele.appendChild(nextpar);
-                generate(json[attr], nextpar);
+                li.innerHTML = '<span>' +
+                    '<span class="switch-open" onclick="toggle(this)"></span>' +
+                    '<input type="checkbox" onclick="selectAll(this)">' + attr + '</span>';
+                let ul = document.createElement('ul');
+                li.appendChild(ul);
+                tree(data[attr], ul);
             }
-            par.appendChild(ele);
+            content.appendChild(li);
         }
     }
-
-    generate(json, document.getElementById('container'));
 
     // 处理展开和收起
-    function toggle(eve) {
-        let par = eve.parentNode.nextElementSibling;
-        if (par.style.display == 'none') {
-            par.style.display = 'block';
-            eve.className = 'switch-open';
+    function toggle(that) {
+        let next = that.parentNode.nextElementSibling;
+        if (next.style.display == 'none') {
+            next.style.display = 'block';
+            that.className = 'switch-open';
 
         } else {
-            par.style.display = 'none';
-            eve.className = 'switch-close';
+            next.style.display = 'none';
+            that.className = 'switch-close';
         }
     }
 
-    // 处理全部勾选和全部不选
-    function checkChange(eve) {
-        let oul = eve.parentNode.nextElementSibling;
-        if (eve.checked) {
-            for (let i = 0; i < oul.querySelectorAll('input').length; i++) {
-                oul.querySelectorAll('input')[i].checked = true;
+    // 处理全选或全不选
+    function selectAll(that) {
+        let ul = that.parentNode.nextElementSibling;
+        if (that.checked) {
+            for (let i = 0; i < ul.querySelectorAll('input').length; i++) {
+                ul.querySelectorAll('input')[i].checked = true;
             }
         } else {
-            for (let i = 0; i < oul.querySelectorAll('input').length; i++) {
-                oul.querySelectorAll('input')[i].checked = false;
+            for (let i = 0; i < ul.querySelectorAll('input').length; i++) {
+                ul.querySelectorAll('input')[i].checked = false;
             }
         }
     }
+
+    const treeContainer = document.getElementById('tree-content');
+    tree(data, treeContainer);
 </script>
 </body>
 </html>

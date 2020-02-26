@@ -15,9 +15,9 @@
     </style>
 </head>
 <body>
-<input type="button" value="图片预加载" onclick="loadImage('./image/image2.png', () => console.log('ok'))">
-<img data-src="./image/image1.png">
-<img data-src="./image/image2.png">
+<input type="button" value="图片预加载" onclick="loadImage('../static/image/image2.png', () => console.log('ok'))">
+<img data-src="../static/image/image1.png">
+<img data-src="../static/image/image2.png">
 </body>
 <script>
     let imgs = document.querySelectorAll('img');

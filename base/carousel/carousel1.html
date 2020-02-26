@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>carousel</title>
     <!-- fontawesome字体库 -->
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .container {
             width: 75vw;
@@ -32,7 +32,7 @@
             height: 100%;
             display: flex;
             /* 动画效果 */
-            transition: left .6s ease-in-out;
+            transition: left .4s ease-in-out;
         }
 
         .content > img {
@@ -109,12 +109,12 @@
 <body>
 <div class="container">
     <div class="content">
-        <img src="./image/image1.png" ondragstart="return false;">
-        <img src="./image/image1.png" ondragstart="return false;">
-        <img src="./image/image1.png" ondragstart="return false;">
+        <img src="../../static/image/image1.png" ondragstart="return false;">
+        <img src="../../static/image/image1.png" ondragstart="return false;">
+        <img src="../../static/image/image1.png" ondragstart="return false;">
     </div>
-    <div class="btn-left" onClick='__switch(false)'><i class="fa fa-angle-left"></i></div>
-    <div class="btn-right" onClick='__switch(true)'><i class="fa fa-angle-right"></i></div>
+    <div class="btn-left" onClick='_switch(false)'><i class="fa fa-angle-left"></i></div>
+    <div class="btn-right" onClick='_switch(true)'><i class="fa fa-angle-right"></i></div>
 </div>
 <div class="switch">
     <!--        <div class="btn on">第1张</div>-->
@@ -123,7 +123,7 @@
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    const time = 3000;
+    const time = 2000;
 
     let content = document.querySelector('.content');
     let switchBtn = document.querySelector('.switch');
@@ -134,7 +134,7 @@
         let ele = document.createElement('div');
         ele.innerText = '第' + (i + 1) + '张';
         ele.className = 'btn';
-        ele.onclick = _switch;
+        ele.onclick = btnSwitch;
         switchBtn.appendChild(ele);
     }
     switchBtn.children[0].classList.add('on');
@@ -146,7 +146,7 @@
     let index = 0; // 轮播索引
 
     // 按钮下标切换图片
-    function _switch() {
+    function btnSwitch() {
         for (let i = 0; i < btnList.length; i++) {
             btnList[i].classList.remove('on');
         }
@@ -157,7 +157,8 @@
         imageShow.left = -index * 100 + '%';
     }
 
-    function __switch(flag) {
+    function _switch(flag) {
+        // 是否右滑
         if (flag) {
             switch (index) {
                 case btnList.length - 1:
@@ -183,24 +184,25 @@
         btnList[index].classList.add('on');
     }
 
-    var interval = setInterval(() => {
-        __switch(true);
+    let interval = setInterval(() => {
+        _switch(true);
     }, time);
-
+    let timeOut;
     let container = document.querySelector('.container');
     // 鼠标经过时清除定时器
     container.onmouseover = function () {
         clearInterval(interval);
+        clearTimeout(timeOut);
     }
     // 鼠标移开时设置定时器
     container.onmouseout = function () {
-        // 先清除定时器
-        clearInterval(interval);
-        // 往右滑动并开启定时器
-        __switch(true);
-        interval = setInterval(() => {
-            __switch(true);
+        // 延时往右滑动并开启定时器
+        timeOut = setTimeout(() => {
+            _switch(true);
         }, time / 2);
+        interval = setInterval(() => {
+            _switch(true);
+        }, time);
     }
 </script>
 </body>

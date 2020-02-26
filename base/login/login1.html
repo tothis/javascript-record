@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>login</title>
     <!-- fontawesome字体库 -->
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>登录</title>
 
     <style>
@@ -38,7 +38,7 @@
             font-size: 30px;
             color: transparent;
             font-weight: bold;
-            background-image: url(../image/cool2.gif);
+            background-image: url(../../static/image/cool2.gif);
             background-size: cover;
             -webkit-background-clip: text;
             -webkit-user-select: none;
@@ -182,10 +182,8 @@
 
         /* placeholder结束 */
 
-        /*check开始*/
+        /* 选择框开始 */
         input[type=radio], input[type=checkbox] {
-            /* 防止::after中的padding改变checkbox位置 */
-            position: absolute;
             /* 去除浏览器默认样式 */
             -webkit-appearance: none;
             /* 手机端必须设置 */
@@ -215,7 +213,7 @@
         }
 
         /* checkbox选中后 */
-        input[type=checkbox]:checked:after {
+        input[type=checkbox]:checked::after {
             content: 'L';
             color: #e61673;
             padding: 2px 0 0 2px;
@@ -245,7 +243,7 @@
 </div>
 <button class="login" onclick="login()">立即登录</button>
 
-<input type="checkbox" id="remember-me">
+<input type="checkbox" id="remember-me" checked>
 <span class="remember-me">记住我</span>
 
 <input type="checkbox" id="remember-password">

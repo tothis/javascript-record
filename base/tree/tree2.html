@@ -356,65 +356,64 @@
 </div>
 
 <script type="text/javascript">
-    let checkedList = [] // 选中列表
-
+    let checkedList = []; // 选中列表
 
     // 节点单击事件
     function domClick(e) {
         // 选中子元素所有input框
-        let subItem = e.parentNode.nextElementSibling
-        let inputList = subItem.querySelectorAll(".to__item")
+        let subItem = e.parentNode.nextElementSibling;
+        let inputList = subItem.querySelectorAll(".to__item");
         for (let i = 0; i < inputList.length; i++) {
-            let item = inputList[i]
-            item.querySelector("input").checked = !e.querySelector("input").checked
-            let subName = item.querySelector(".to__name").innerHTML
+            let item = inputList[i];
+            item.querySelector("input").checked = !e.querySelector("input").checked;
+            let subName = item.querySelector(".to__name").innerHTML;
         }
 
         // 选中当前input框
-        e.querySelector("input").checked = !e.querySelector("input").checked
-        select(e)
+        e.querySelector("input").checked = !e.querySelector("input").checked;
+        select(e);
     }
 
     // 冒泡事件
     function checkboxClick(e) {
-        e.checked = !e.checked
+        e.checked = !e.checked;
     }
 
     // checkedbox选中事件
     function select() {
         // 筛选在右侧区域需要遍历的内容
-        checkedList = []
-        let cList = document.getElementsByName("cName")
+        checkedList = [];
+        let cList = document.getElementsByName("cName");
         for (let i = 0; i < cList.length; i++) {
-            let classArr = (cList[i].parentNode.parentNode.className).split(' ')
-            let className = classArr[classArr.length - 1]
-            let level = parseInt(className.replace(/\w+-/g, '')) //
+            let classArr = (cList[i].parentNode.parentNode.className).split(' ');
+            let className = classArr[classArr.length - 1];
+            let level = parseInt(className.replace(/\w+-/g, ''));
 
             // 设置显示的级别
-            let levelArr = document.querySelectorAll("[class^='to__item level-']")
-            let max = 1
+            let levelArr = document.querySelectorAll("[class^='to__item level-']");
+            let max = 1;
 
             for (let a = 0; a < levelArr.length; a++) {
                 let item = levelArr[a];
-                let arr = item.className.split('-')
+                let arr = item.className.split('-');
                 if (parseInt(arr[1]) > max) {
-                    max = parseInt(arr[1])
+                    max = parseInt(arr[1]);
                 }
             }
             if (level == max && cList[i].checked == true) {
-                checkedList.push(cList[i].value)
+                checkedList.push(cList[i].value);
             }
         }
 
         // 右侧区域添加选中内容
-        let dom = document.getElementById("rightCont")
-        dom.innerHTML = ""
+        let dom = document.getElementById("rightCont");
+        dom.innerHTML = "";
         for (let i = 0; i < checkedList.length; i++) {
             let item = checkedList[i];
-            let div = document.createElement("div")
-            div.className = "to__item"
-            div.innerHTML = '<span>' + item + '</span><span class="to__close" onclick="cancel(this)"><i>+</i></span>'
-            dom.appendChild(div)
+            let div = document.createElement("div");
+            div.className = "to__item";
+            div.innerHTML = '<span>' + item + '</span><span class="to__close" onclick="cancel(this)"><i>+</i></span>';
+            dom.appendChild(div);
         }
     }
 
@@ -424,7 +423,7 @@
         for (let i = 0; i < cList.length; i++) {
             let item = cList[i];
             if (item.value == dom.previousElementSibling.innerHTML) {
-                item.checked = false
+                item.checked = false;
                 select();
                 break;
             }
@@ -435,17 +434,17 @@
     function dropClick(dom) {
         // 切换样式状态
         if (dom.className.indexOf("to__roate") > -1) {
-            dom.className = ""
+            dom.className = "";
         } else {
-            dom.className = "to__roate"
+            dom.className = "to__roate";
         }
 
         // 显示隐藏内容
         let domShow = dom.parentNode.parentNode.nextElementSibling
         if (domShow.className.indexOf("to__show") > -1) {
-            domShow.className = "to__subItem"
+            domShow.className = "to__subItem";
         } else {
-            domShow.className = "to__subItem to__show"
+            domShow.className = "to__subItem to__show";
         }
     }
 
@@ -525,7 +524,6 @@
         let baseDom = document.createElement("div");
         getData(data, baseDom);
         document.getElementById("leftCont").innerHTML = baseDom.innerHTML;
-
     }
 </script>
 </body>
