@@ -11,7 +11,7 @@
         <i>test</i>one
     </div>
     <script>var test = 'test';</script>
-    <div id="2">
+    <!-- two --><div id="2">
         <i></i>two
     </div>
 </div>
@@ -60,12 +60,14 @@
 
     /**
      * nextSibling与nextElementSibling 下一个兄弟元素节点
+     * nextSibling会获取文本和注释 nextElementSibling只获取doc元素
      */
     console.log(one.nextSibling, 'nextSibling');
     console.log(one.nextElementSibling, 'nextElementSibling');
 
     /**
      * previousSibling与previousElementSibling 前一个兄弟元素节点
+     * previousSibling会获取文本和注释 previousElementSibling只获取doc元素
      */
     console.log(two.previousSibling, 'previousSibling');
     console.log(two.previousElementSibling, 'previousElementSibling');

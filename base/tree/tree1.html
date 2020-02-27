@@ -9,7 +9,7 @@
         }
 
         /* 展开 */
-        .switch-open {
+        .tree-open {
             margin-left: -12px;
             border: 6px solid transparent;
             display: inline-block;
@@ -18,7 +18,7 @@
         }
 
         /* 关闭 */
-        .switch-close {
+        .tree-close {
             margin-left: -12px;
             border: 6px solid transparent;
             display: inline-block;
@@ -58,6 +58,11 @@
         input[type=checkbox]:checked::after {
             color: white;
         }
+
+        /* checkbox选中后 */
+        input[type=checkbox]:checked::after.miss {
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -89,8 +94,8 @@
                 li.innerHTML = '<input type="checkbox">' + attr;
             else {
                 li.innerHTML = '<span>' +
-                    '<span class="switch-open" onclick="toggle(this)"></span>' +
-                    '<input type="checkbox" onclick="selectAll(this)">' + attr + '</span>';
+                    '<span class="tree-open" onclick="treeOpen(this)"></span>' +
+                    '<input type="checkbox" onclick="treeCheck(this)">' + attr + '</span>';
                 let ul = document.createElement('ul');
                 li.appendChild(ul);
                 tree(data[attr], ul);
@@ -100,28 +105,45 @@
     }
 
     // 处理展开和收起
-    function toggle(that) {
+    function treeOpen(that) {
         let next = that.parentNode.nextElementSibling;
-        if (next.style.display == 'none') {
+        if (next.style.display === 'none') {
             next.style.display = 'block';
-            that.className = 'switch-open';
-
+            that.className = 'tree-open';
         } else {
             next.style.display = 'none';
-            that.className = 'switch-close';
+            that.className = 'tree-close';
         }
     }
 
     // 处理全选或全不选
-    function selectAll(that) {
-        let ul = that.parentNode.nextElementSibling;
+    function treeCheck(that) {
+        // 子节点的ul
+        let childrenUl = that.parentNode.nextElementSibling;
+        let list = childrenUl.querySelectorAll('input');
         if (that.checked) {
-            for (let i = 0; i < ul.querySelectorAll('input').length; i++) {
-                ul.querySelectorAll('input')[i].checked = true;
+            for (let i = 0; i < list.length; i++) {
+                list[i].checked = true;
             }
+
+            // // 兄弟节点的ul
+            // let brotherUl =that.parentNode.parentNode;
+            // // 父元素checkbox的上级元素
+            // let span = that.parentNode.parentNode.previousElementSibling;
+            //
+            // if (span) {
+            //     // 父级选择框
+            //     let parentChecked = span.children[0].checked;
+            //     let parentCheckedFlag= true;
+            //     for (let j=0;j<brotherUl.length;j++) {
+            //         if (!brotherUl[j].children[0].children[1].checked)
+            //             parentCheckedFlag = false;
+            //     }
+            //     parentChecked = parentCheckedFlag;
+            // }
         } else {
-            for (let i = 0; i < ul.querySelectorAll('input').length; i++) {
-                ul.querySelectorAll('input')[i].checked = false;
+            for (let i = 0; i < list.length; i++) {
+                list[i].checked = false;
             }
         }
     }
