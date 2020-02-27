@@ -14,21 +14,6 @@
 <p id="show"></p>
 
 <script>
-    /*// 必须声明方法 否则无法删除此监听器
-    function state() {
-        history.pushState(null, null, document.URL);
-    }
-
-    history.pushState(null, null, document.URL);
-    // 禁用浏览器回退页面操作
-    window.addEventListener('popstate', state);
-    // 使用history.forward()和history.go(1)也可禁用回退 但快速点击浏览器返回按钮会失效
-
-    function success() {
-        // 开启浏览器回退页面操作
-        window.removeEventListener('popstate', state);
-    }*/
-
     function param(key) {
         let regExp = new RegExp('(^|&)' + key + '=([^&]*)(&|$)', 'i');
         let result = (arguments[1] ? location.hash : location.search).substr(1).match(regExp);
@@ -79,6 +64,21 @@
         // history.replaceState(state, null, 'load/url');
     }
 
+    /*// 必须声明方法 否则无法删除此监听器
+    function state() {
+        history.pushState(null, null, document.URL);
+    }
+
+    history.pushState(null, null, document.URL);
+    // 禁用浏览器回退页面操作
+    window.addEventListener('popstate', state);
+    // 使用history.forward()和history.go(1)也可禁用回退 但快速点击浏览器返回按钮会失效
+
+    function success() {
+        // 开启浏览器回退页面操作
+        window.removeEventListener('popstate', state);
+    }*/
+
     (function (history) {
         let pushState = history.pushState;
         history.pushState = function () {
@@ -98,6 +98,16 @@
     window.addEventListener('popstate', function (event) {
         console.log(event.state, 'popstate');
     });
+
+    // 自定义返回事件
+    /*window.history.pushState(null, null, ''); // 清空浏览器历史记录
+    // 监听浏览器后退事件
+    window.addEventListener('popstate',
+        // 转向指定的URL
+        e => {
+            location.href = './zodiac.html';
+        }
+    );*/
 
     document.querySelector('a').href = href;
 
