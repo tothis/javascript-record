@@ -5,14 +5,20 @@
     <title>video-call</title>
 </head>
 <body>
-Local<br>
+local<br>
 <video id="localVideo" autoplay></video>
 <br>
-Remote<br>
+remote<br>
 <video id="remoteVideo" autoplay></video>
 
 <script>
-    // 仅仅用于控制哪一端的浏览器发起offer #号后面有值的一方发起
+    /**
+     * WebRTC (Web Real-Time Communication) 基于web的实时通信
+     * RTCPeerConnection 传输音视频流 peer-to-peer场景
+     * RTCDataChannel 传输二进制数据流
+     * ICE(Interactive Connectivity Establishment) 交互式连接建立
+     */
+        // 仅仅用于控制哪一端的浏览器发起offer #号后面有值的一方发起
     let isCaller = window.location.href.split('#')[1];
 
     // 与信令服务器的WebSocket连接
