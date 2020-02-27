@@ -99,15 +99,10 @@
         console.log(event.state, 'popstate');
     });
 
-    // 自定义返回事件
-    /*window.history.pushState(null, null, ''); // 清空浏览器历史记录
-    // 监听浏览器后退事件
-    window.addEventListener('popstate',
-        // 转向指定的URL
-        e => {
-            location.href = './zodiac.html';
-        }
-    );*/
+    /*// 自定义返回事件
+    window.history.pushState(null, null, ''); // 清空浏览器历史记录
+    // 监听浏览器后退事件 跳转指定的URL
+    window.addEventListener('popstate', e => location.href = './zodiac.html');*/
 
     document.querySelector('a').href = href;
 
