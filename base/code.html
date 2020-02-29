@@ -30,6 +30,9 @@
     </style>
 </head>
 <body>
+<input value="原生实现复制" onclick="select();document.execCommand('copy')">
+<!-- 只在ie生效 参数一 内容格式 参数二复制内容 -->
+<!-- <input value="原生实现复制" onclick="clipboardData.setData('test', value);"> -->
 <textarea id="textarea-cut">
     clipboard.js只能在textarea或input中cut
 </textarea>
