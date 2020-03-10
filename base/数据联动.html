@@ -6,6 +6,7 @@
 </head>
 <body>
 省份<select id="province" data-test="test" onchange="resetCity()">
+    <!-- option不存在value属性时 value为option的textContent值 -->
     <option>选择省份</option>
 </select>
 城市<select id="city" onchange="resetArea()">
