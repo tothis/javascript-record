@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>promise</title>
+</head>
+<body>
+<button onclick="test()">promise</button>
+<script>
+    function test() {
+        new Promise(testFail)
+            .then(function (result) {
+                console.log('成功 ' + result);
+            })
+            .catch(function (reason) {
+                console.log('失败 ' + reason);
+            });
+    }
+
+    function testFail(resolve, reject) {
+        let timeOut = Math.random() * 2;
+        setTimeout(function () {
+            if (timeOut < 1) {
+                console.log('call resolve');
+                resolve('ok');
+            } else {
+                console.log('call reject');
+                reject('fail timeout ' + timeOut);
+            }
+        }, timeOut * 1000);
+    }
+</script>
+</body>
+</html>
