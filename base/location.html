@@ -5,7 +5,18 @@
     <title>location</title>
 </head>
 <body>
-<a>location</a>
+<!--
+nofllow 告诉搜索引擎 不将该链接计入权重
+跳转页面时 目标页面可通过window.opener操作当前页部分内容
+Chrome 49+ Opera 36+ 打开添加了rel=noopener的链接 window.opener为null
+在老浏览器 可使用rel=noreferrer 禁用HTTP头部的Referer属性
+
+js实现方式
+let otherWindow = window.open('http://www.baidu.com');
+otherWindow.opener = null;
+otherWindow.location = url;
+-->
+<a rel="noopener noreferrer">location</a>
 <!-- <button onclick="success()">success</button> -->
 <button onclick="history.back()">back</button>
 <button onclick="history.go(-1)">go(-1)</button>
