@@ -4,14 +4,17 @@
     <meta charset="utf-8">
     <title>scroll</title>
     <style>
-        #text {
-            margin: 100vh 0 20vh;
-            display: block;
-        }
-
         .button {
             top: 0;
             position: fixed;
+        }
+
+        .item {
+            width: 10rem;
+            height: 10rem;
+            border-radius: 50%;
+            margin-top: 120vh;
+            background-color: red;
         }
     </style>
 </head>
@@ -21,19 +24,19 @@
     <input type="button" id="btn2" value="btn2">
     <input type="button" id="btn3" value="btn3">
 </div>
-<input id="text" value="文本">
+<div class="item"></div>
 <script>
-    const text = document.getElementById('text');
+    const item = document.querySelector('.item');
 
     // https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollIntoView
     document.getElementById('btn1').onclick = function () {
-        text.scrollIntoView(/*true*/); // 默认参数为true
+        item.scrollIntoView(/*true*/); // 默认参数为true
     };
     document.getElementById('btn2').onclick = function () {
-        text.scrollIntoView(false);
+        item.scrollIntoView(false);
     };
     document.getElementById('btn3').onclick = function () {
-        text.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+        item.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
     };
 </script>
 </body>
