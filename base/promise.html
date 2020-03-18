@@ -29,6 +29,28 @@
             }
         }, timeOut * 1000);
     }
+
+    let promise1 = new Promise((resolve, reject) => {
+        console.log('promise1');
+        resolve();
+    });
+
+    let promise2 = new Promise((resolve, reject) => {
+        console.log('promise2');
+        reject();
+    });
+    /**
+     * promise链式执行
+     */
+    // 全部成功执行成功
+    Promise.all([promise1, promise2])
+        .then(() => console.log('all'))
+        .catch(() => console.log('all error'));
+
+    // 一个成功执行成功
+    Promise.race([promise1, promise2])
+        .then(() => console.log('race'))
+        .catch(() => console.log('race error'));
 </script>
 </body>
 </html>

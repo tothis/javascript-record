@@ -160,7 +160,7 @@
     }
 
     console.log(argumentsTest(0, '1', "2")); // 0,1,2
-    // callee属性 返回正被执行的Function对象 即当前函数主体
+    // callee属性 返回正被执行的function对象 即当前函数主体
     let sum = function (num) {
         if (num === 1) {
             return 1;
@@ -400,7 +400,7 @@
         console.log(value);
     }
 
-    console.log('%c控制台','background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); font-size: 6rem; border-radius: .8rem;');
+    console.log('%c控制台', 'background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); font-size: 6rem; border-radius: .8rem;');
 
     // 重写console.log
     // 方式1
@@ -466,6 +466,9 @@
     }
 
     console.log(test(1, 2, 3)); // [2, 3]
+
+    // 参数3开始 往后的参数传进参数1函数中
+    setTimeout((a, b) => console.log(a + b), 1000, 1, 2);
 </script>
 </body>
 </html>

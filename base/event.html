@@ -86,7 +86,8 @@
      */
     const btn3 = document.getElementById('btn3');
     btn3.addEventListener('click'
-        , function (e) { // 此处使用'()=>{}'函数下面无法获取arguments
+        // 此处使用'()=>{}'函数下面无法获取arguments
+        , function (e) {
             console.log('btn3');
             if (1 === 1) {
                 // 删除匿名方法
@@ -205,7 +206,7 @@
 
     // 查看元素已有事件 chrome控制台调试可用 写在页面中会报错
     // 结果中点击 事件名 => listener => [[FuntionLocation]] -> 函数
-    getEventListeners(document.getElementById('btn3'))
+    // getEventListeners(document.getElementById('btn3'))
 </script>
 </body>
 </html>

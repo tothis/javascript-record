@@ -171,6 +171,7 @@
     function American(name, age, address) {
         this.address = address;
     }
+
     American.prototype = new Person();
 
     // 设置原型的构造器 仅可用于识别对象是由哪个构造函数初始化 仅此而已
@@ -187,6 +188,70 @@
     let test = new Person();
     console.log(test.constructor === Person); // true
     console.log(test.__proto__ === Person.prototype); // true
+
+    /**
+     * 普通函数中this
+     * 指向直接调用者 如obj.fun fun中最外层this就是指向obj
+     * 无直接调用者 this指向window如自执行函数
+     * 使用call apply bind时 this指向绑定对象
+     *
+     * call方法 参数1为this指向 后传入其它参数 参数1为null undefined时 this指向window
+     * apply方法 参数1为this指向 参数2为参数数组 参数1为null undefined时
+     * bind方法 与call方法区别为bind方法返回值为函数 其它特性相同
+     *
+     * es6箭头函数中this
+     * 指向定义此函数时 所处上下文对象 无上下文对象时指向window
+     * call apply bind等方法也不能改变箭头函数this指向
+     */
+    obj = {age: 18};
+    obj.fun = function () {
+        console.log(this, 1); // this为obj
+    }
+    obj.fun.fun1 = function () {
+        console.log(this, 21); // this为obj.fun
+    }
+    obj.fun.fun2 = () => {
+        console.log(this, 22); // this为window
+    }
+    obj.fun.fun3 = function () {
+        return () => {
+            console.log(this, 23); // this为obj
+        }
+    }
+    obj.fun();
+    obj.fun.fun1();
+    obj.fun.fun2();
+    obj.fun.fun3()();
+    console.log((function () {
+        return this; // this为window
+    }()));
+    /**
+     * 'use strict'指令只允许出现在脚本或函数的开头
+     * 非严格模式 无执行主体时this指向window 严格模式下 无执行主体时this指向undefined
+     */
+    // 严格模式开始 测试严格模式 需要在一个新页面复制如下代码测试
+    'use strict';
+    console.log('严格模式 全局作用域中的this');
+    console.log(this); // window
+
+    console.log('严格模式 全局作用域中函数中的this');
+
+    function f1() {
+        function f2() {
+            console.log(this); // undefined
+        }
+
+        f2();
+    }
+
+    f1();
+
+    (function () {
+        console.log(this); // undefined
+    })();
+
+    (() => console.log(this))(); // window
+    // 严格模式结束
 </script>
 </body>
 </html>
