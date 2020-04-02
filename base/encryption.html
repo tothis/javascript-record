@@ -49,6 +49,35 @@
     const write = function () {
         document.write(Array.prototype.slice.call(arguments).join('') + '<br>');
     }
+
+    const chars = '0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ+/'.split('');
+
+    function str10to64(number) {
+        let radix = chars.length,
+            result = [],
+            mod;
+        do {
+            mod = number % radix;
+            number = (number - mod) / radix;
+            result.unshift(chars[mod]);
+        } while (number);
+        return result.join('');
+    }
+
+    function str64to10(number) {
+        number = String(number);
+        let radix = chars.length,
+            len = number.length,
+            i = 0,
+            result = 0;
+        while (i < len) {
+            result += Math.pow(radix, i++) * chars.indexOf(number.charAt(len - i) || 0);
+        }
+        return result;
+    }
+
+    console.log(str10to64(100));
+    console.log(str64to10('1A'));
 </script>
 </body>
 </html>
