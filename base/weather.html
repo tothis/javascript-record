@@ -291,7 +291,7 @@
         console.log(data, 'weather');
 
         country.textContent = data.country;
-        day.textContent = data.update_time.substr(0, 10);
+        day.textContent = '今天 ' + data.update_time.substr(0, 10);
         cityText.textContent = data.city;
 
         const now = data.data[0];
