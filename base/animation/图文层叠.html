@@ -9,7 +9,7 @@
         }
 
         body {
-            background-color: #333333
+            background-color: #333;
         }
 
         ul {
@@ -95,124 +95,121 @@
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script>
     (function (window, document) {
-        let poster = function (turn) {
-            this.turn = turn;
-            this.poster = $('#' + turn.id);
+        let poster = function (params) {
+            this.config = params;
+            this.poster = $('#' + params.id);
             this.X = 0;
-            this.timer = '';
+            this.interval = '';
             this.pageY = 0;
             this.endY = 0;
             this.posteritem = this.poster.children('.poster-item');
-            this.num_li = this.posteritem.length; // 轮播元素个数 posterPy为每个的偏移量
-            this.posterPy = turn.Awidth / (this.num_li - 1);
+            this.size = this.posteritem.length;
+            // 轮播元素个数 posterPy为每个的偏移量
+            this.posterPy = params.offset / (this.size - 1);
             this.init();
-            this.turn_();
-            this.auto_play();
+            this.autoPlay();
             return this;
-        }
+        };
         poster.prototype = {
             constructor: poster,
             init: function () {
                 let _self = this;
                 this.poster.children('.poster-item').each(function (index) {
-                    // index是第几个元素 X是选取的中间数
-                    let rt = 1; // 1 右侧 -1 左侧
-                    if ((index - _self.X) > _self.num_li / 2 || (index - _self.X) < 0
-                        && (index - _self.X) > (-_self.num_li / 2)) {
-                        rt = -1;
+                    // index 元素下标 X中间数
+                    let direction = 1; // 1 右侧 -1 左侧
+                    if ((index - _self.X) > _self.size / 2 || (index - _self.X) < 0
+                        && (index - _self.X) > (-_self.size / 2)) {
+                        direction = -1;
                     }
                     // 判断元素左侧还是右侧
                     let i = Math.abs(index - _self.X);
                     // 取绝对值
-                    if (i > _self.num_li / 2) {
-                        i = parseInt(_self.X) + parseInt(_self.num_li) - index;
+                    if (i > _self.size / 2) {
+                        i = parseInt(_self.X) + parseInt(_self.size) - index;
                     }
                     // i:是左或者右的第几个
-                    if ((index - _self.X) < (-_self.num_li / 2)) {
-                        i = _self.num_li + index - _self.X;
+                    if ((index - _self.X) < (-_self.size / 2)) {
+                        i = _self.size + index - _self.X;
                     }
                     $(this).css({
                         'position': 'absolute',
                         'left': '50%',
-                        'margin-left': -_self.turn.width / 2 + _self.posterPy * rt * i + 'px',
-                        'z-index': _self.num_li - i,
-                        'opacity': Math.pow(_self.turn.opacity, i),
-                        'transform': 'scale(' + Math.pow(_self.turn.scale, i)
+                        'margin-left': -_self.config.width / 2 + _self.posterPy * direction * i + 'px',
+                        'z-index': _self.size - i,
+                        'opacity': Math.pow(_self.config.opacity, i),
+                        'transform': 'scale(' + Math.pow(_self.config.scale, i)
                             + ') rotate(-90deg) rotate(-90deg)',
-                        '-webkit-transform': 'scale(' + Math.pow(_self.turn.scale, i)
+                        '-webkit-transform': 'scale(' + Math.pow(_self.config.scale, i)
                             + ') rotate(-90deg)'
                     });
-                    $(this).attr('data_n', index);
-                })
-            },
-            turn_: function () {
-                let _self = this;
+                    $(this).attr('data-index', index);
+                });
+
                 let pageY;
                 this.posteritem.click(function () {
-                    _self.X = $(this).attr('data_n');
+                    _self.X = $(this).attr('data-index');
                     _self.init();
                 });
                 this.posteritem.hover(function () {
-                    clearInterval(_self.timer);
-                    _self.timer = '';
+                    clearInterval(_self.interval);
+                    _self.interval = '';
                 });
                 this.posteritem.mouseleave(function () {
-                    _self.auto_play();
+                    _self.autoPlay();
                 });
                 document.addEventListener('touchstart', function (e) {
                     pageY = e.touches[0].pageY;
                 }, false);
-                document.addEventListener('touchend', function (e) {
 
+                document.addEventListener('touchend', function (e) {
                     let endY = e.changedTouches[0].pageY;
                     let y = endY - pageY;
                     console.log(y);
                     if (y > 0) {
-                        _self.prev_();
+                        _self.prev();
                     } else {
-                        _self.next_();
+                        _self.next();
                     }
                 }, false);
             },
-            prev_: function () {
+            prev: function () {
                 this.X--;
                 if (this.X < 0) {
-                    this.X = this.num_li - 1;
+                    this.X = this.size - 1;
                 }
                 this.init();
             },
-            next_: function () {
+            next: function () {
                 this.X++;
-                if (this.X >= this.num_li) {
+                if (this.X >= this.size) {
                     this.X = 0;
                 }
                 this.init();
             },
-            auto_play: function () {
-
+            autoPlay: function () {
                 let _self = this;
-                let turning = 5000;
-                if (this.turn.turning) {
-                    turning = this.turn.turning;
+                let time = 5000;
+                if (this.config.time) {
+                    time = this.config.time;
                 }
-                if (_self.turn.auto) {
-                    _self.timer = setInterval(function () {
-                        _self.next_();
-                    }, turning);
+                if (_self.config.auto) {
+                    _self.interval = setInterval(function () {
+                        _self.next();
+                    }, time);
                 }
             }
         };
         window.poster = poster;
     }(window, document));
 
-    let s = new poster({
+    new poster({
         id: 'poster',
-        opacity: 0.9,
+        opacity: .4,
         width: 200,
-        Awidth: 300,
+        offset: 300,
         scale: 0.9,
-        auto: true, /* 是否轮播 默认5000 */
-        turning: 2000 /* 轮播时长 */
+        auto: true,
+        time: 2000
     });
 </script>
 </body>
