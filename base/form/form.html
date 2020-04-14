@@ -25,7 +25,8 @@
         <!-- button标签type属性默认为submit点击后会提交form表单 -->
         <button type="button" onclick="ele.focus()">获取焦点</button>
         <button type="button" onclick="ele.blur()">失去焦点</button>
-        <button type="button" id="isClick">防止多次点击</button>
+        <button type="button" id="isClick1">防止多次点击</button>
+        <button type="button" id="isClick2">防止多次点击</button>
     </div>
 </form>
 <!-- form="dataForm" 关联id为dataForm的form -->
@@ -128,33 +129,6 @@
         })
     );
 
-    /**
-     * 节流函数 通过控制每次事件执行时间间隔控制短时间多次执行方法
-     * handler 要执行的方法
-     * wait 每次点击事件执行的时间间隔(毫秒)
-     */
-    function throttle(handler, wait) {
-        // 'return () =>'上代码只会执行一次 且在页面加载后执行
-        let isClick = true;
-        let lastTime = 0;
-        console.log(isClick, lastTime);
-        return () => {
-            let nowTime = new Date().getTime();
-            if (nowTime - lastTime > wait) {
-                handler.apply(this, arguments);
-                lastTime = nowTime;
-            }
-            // if (isClick) {
-            //     // 定时器
-            //     setTimeout(function () {
-            //         isClick = true;
-            //     }, wait);
-            //     isClick = false;
-            //     handler.apply(this, arguments);
-            // }
-        }
-    }
-
     // 提交方法
     function submitForm(event) {
         // 因为此方法由throttle方法调用因此如下三个打印皆为undefined
@@ -165,8 +139,45 @@
         console.log('提交操作', new Date().getTime())
     }
 
+    /**
+     * 节流函数 通过控制每次事件执行时间间隔控制短时间多次执行方法
+     * handler 要执行的方法
+     * wait 每次点击事件执行的时间间隔(毫秒)
+     */
+    // 时间戳方案
+    function throttle1(handler, wait) {
+        // 'return () =>'上代码只会执行一次 且在页面加载后执行
+        let lastTime = 0;
+        return () => {
+            let nowTime = new Date().getTime();
+            if (nowTime - lastTime > wait) {
+                handler.apply(this, arguments);
+                lastTime = nowTime;
+            }
+        }
+    }
+
+    // 定时器方案
+    function throttle2(handler, wait) {
+        let isClick = true;
+        return () => {
+            if (isClick) {
+                setTimeout(function () {
+                    isClick = true;
+                }, wait);
+                // 先执行setTimeout下语句 后执行setTimeout内语句
+                handler.apply(this, arguments);
+                isClick = false;
+            }
+        }
+    }
+
+
     // btn1按钮1秒钟内只能被点击一次
-    document.getElementById('isClick').addEventListener('click', throttle(submitForm, 1000));
+    document.getElementById('isClick1')
+        .addEventListener('click', throttle1(submitForm, 1000));
+    document.getElementById('isClick2')
+        .addEventListener('click', throttle2(submitForm, 1000));
 
     /**
      * 防抖函数 通过推迟每次事件执行的时间来减少不必要的查询
@@ -179,6 +190,7 @@
         return function () {
             let self = this, arg = arguments;
 
+            // 清除上一次记录的定时器 保证源函数只执行一次
             clearTimeout(timer);
 
             timer = setTimeout(function () {
@@ -190,7 +202,7 @@
     document.getElementById('search').addEventListener('keyup', debounce((event) => {
         console.log(event.target, 'target');
         console.log('查询操作', new Date().getTime());
-    }, 500));
+    }, 3000));
 </script>
 </body>
 </html>
