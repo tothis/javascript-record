@@ -162,7 +162,7 @@
         let isClick = true;
         return () => {
             if (isClick) {
-                setTimeout(function () {
+                setTimeout(() => {
                     isClick = true;
                 }, wait);
                 // 先执行setTimeout下语句 后执行setTimeout内语句
@@ -187,13 +187,14 @@
     function debounce(handler, delay) {
         let timer;
 
+        // return () => {
         return function () {
             let self = this, arg = arguments;
 
             // 清除上一次记录的定时器 保证源函数只执行一次
             clearTimeout(timer);
 
-            timer = setTimeout(function () {
+            timer = setTimeout(() => {
                 handler.apply(self, arg)
             }, delay)
         }
