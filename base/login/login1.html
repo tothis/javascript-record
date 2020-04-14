@@ -338,7 +338,8 @@
 
     // 用户名失去焦点时调用该方法
     function setPassword() {
-        if (userName.value.trim() !== '' && password.value === '') {
+        if (userName.value.trim() !== ''
+            && password.value === '') {
             let passwordValue = getCookie(userName.value);
             if (passwordValue !== '') {
                 rememberPassword.checked = true;
@@ -350,11 +351,13 @@
     function setCookie(name, value, time, path) {
         let date = new Date();
         date.setTime(date.getTime() + time);
-        document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + date.toGMTString() + ';path=' + (path === null ? '/' : path);
+        document.cookie = name + '=' + encodeURIComponent(value)
+            + ';expires=' + date.toGMTString() + ';path='
+            + (path === null ? '/' : path);
     }
 
     function getCookie(name) {
-        let arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        let arr, reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)');
         if (arr = document.cookie.match(reg))
             return decodeURIComponent(arr[2]);
         else
@@ -366,7 +369,8 @@
         date.setTime(date.getTime() - 1);
         let value = getCookie(name);
         if (value !== null)
-            document.cookie = name + "=" + value + ";expires=" + date.toGMTString();
+            document.cookie = name + '=' + value
+                + ';expires=' + date.toGMTString();
     }
 
     // 清除所有cookie
