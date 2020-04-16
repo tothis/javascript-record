@@ -240,6 +240,16 @@
         return a - b;
     });
     console.log(arr3, 'arr3');
+
+    // 数组删除元素
+    Array.prototype.remove = function (val) {
+        const index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+    arr3.remove(2);
+    console.log(arr3);
 </script>
 </body>
 </html>
