@@ -82,117 +82,116 @@
         center: [116.397428, 39.918578],
         layers: [
             // 卫星
-            new AMap.TileLayer.Satellite(),
+            new AMap.TileLayer.Satellite()
             // 路网
             // new AMap.TileLayer.RoadNet()
         ],
         zoom: 16,
         resizeEnable: true
-    });
+    })
 
-    const mouseTool = new AMap.MouseTool(map);
+    const mouseTool = new AMap.MouseTool(map)
     // 监听draw事件可获取画好的覆盖物
-    let overlays = [];
-    mouseTool.on('draw', function (e) {
-        overlays.push(e.obj);
-    });
+    let overlays = []
+    mouseTool.on('draw', function(e) {
+        overlays.push(e.obj)
+    })
 
     function draw(type) {
         switch (type) {
             case 'marker': {
                 mouseTool.marker({
                     // 同Marker的Option设置
-                });
-                break;
+                })
+                break
             }
             case 'polyline': {
                 mouseTool.polyline({
                     strokeColor: '#80d8ff'
                     // 同Polyline的Option设置
-                });
-                break;
+                })
+                break
             }
             case 'polygon': {
                 mouseTool.polygon({
                     fillColor: '#00b0ff',
                     strokeColor: '#80d8ff'
                     // 同Polygon的Option设置
-                });
-                break;
+                })
+                break
             }
             case 'rectangle': {
                 mouseTool.rectangle({
                     fillColor: '#00b0ff',
                     strokeColor: '#80d8ff'
                     // 同Polygon的Option设置
-                });
-                break;
+                })
+                break
             }
             case 'circle': {
                 mouseTool.circle({
                     fillColor: '#00b0ff',
                     strokeColor: '#80d8ff'
                     // 同Circle的Option设置
-                });
-                break;
+                })
+                break
             }
         }
     }
 
-    const radios = document.getElementsByName('func');
+    const radios = document.getElementsByName('func')
     for (let i = 0; i < radios.length; i += 1) {
-        radios[i].onchange = function (e) {
-
+        radios[i].onchange = function(e) {
             draw(e.target.value)
         }
     }
     draw('marker')
 
-    document.getElementById('clear').onclick = function () {
+    document.getElementById('clear').onclick = function() {
         map.remove(overlays)
-        overlays = [];
+        overlays = []
     }
-    document.getElementById('close').onclick = function () {
+    document.getElementById('close').onclick = function() {
         mouseTool.close(true) // 关闭 并清除覆盖物
         for (let i = 0; i < radios.length; i += 1) {
-            radios[i].checked = false;
+            radios[i].checked = false
         }
     }
 
     // 输入提示
     let auto = new AMap.Autocomplete({
         input: 'tipinput'
-    });
+    })
 
     let geocoder = new AMap.Geocoder({
-        city: '010', // 城市设为北京 默认全国
-    });
+        city: '010' // 城市设为北京 默认全国
+    })
 
-    let marker = new AMap.Marker();
+    let marker = new AMap.Marker()
 
-    document.getElementById('geo').onclick = geoCode;
+    document.getElementById('geo').onclick = geoCode
 
     function geoCode() {
-        let address = document.getElementById('address').value;
-        geocoder.getLocation(address, function (status, result) {
+        let address = document.getElementById('address').value
+        geocoder.getLocation(address, function(status, result) {
             if (status === 'complete' && result.geocodes.length) {
                 let lnglat = result.geocodes[0].location
-                document.getElementById('lnglat').value = lnglat;
-                marker.setPosition(lnglat);
-                map.add(marker);
-                map.setFitView(marker);
+                document.getElementById('lnglat').value = lnglat
+                marker.setPosition(lnglat)
+                map.add(marker)
+                map.setFitView(marker)
             } else {
-                log.error('根据地址查询位置失败');
+                log.error('根据地址查询位置失败')
             }
-        });
+        })
     }
 
-    document.getElementById('address').onkeydown = function (e) {
+    document.getElementById('address').onkeydown = function(e) {
         if (e.keyCode === 13) {
-            geoCode();
-            return false;
+            geoCode()
+            return false
         }
-        return true;
+        return true
     }
 </script>
 </body>

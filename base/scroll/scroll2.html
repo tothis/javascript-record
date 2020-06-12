@@ -70,7 +70,7 @@
      * safari使用window.pageYOffset获取scrollTop高度
      */
     window.onscroll = function () {
-        let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+        scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
         scroll.style.display = (scrollTop >= 300) ? 'block' : 'none';
     }
 </script>
