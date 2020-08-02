@@ -31,6 +31,7 @@
         // test = 'test\ntest';
         // test = 'test\rtest';
         test = 'test\r\ntest';
+        // ^ 从字符串开始处匹配 $ 从字符串结束处匹配
         document.write(' 测试数据 => ', test);
         document.write(' 无$无^ => ', test.match(/test/g)); // 无 $^但有g时也会匹配多行
         document.write(' 无m => ', test.match(/test$/g));
