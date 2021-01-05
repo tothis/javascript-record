@@ -7,7 +7,7 @@ const express = require('express'),
 server.listen(8080);
 
 app.get('/', function (req, res) {
-    res.sendfile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 // 存储socket的数组 这里只能有2个socket 每次测试需要重启 否则会出错
